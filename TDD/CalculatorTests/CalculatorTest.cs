@@ -44,5 +44,11 @@ namespace CalculatorTests
             Assert.AreEqual(Calculator.Calculate(-2, 5, '*'), -10);
             Assert.AreEqual(Calculator.Calculate(-2.5, -3, '*'), 7.5);
         }
+
+        [TestMethod]
+        public void given_numbersOverflow_when_multiply_then_throwException()
+        {
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MaxValue, 1.1, '*'));
+        }
     }
 }
