@@ -6,8 +6,9 @@ namespace CalculatorTests
     public class CalculatorTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void given_zeros_when_add_then_returnZero()
         {
+            Assert.AreEqual(Calculator.Calculate(0, 0, '+'), 0);
         }
     }
 }
