@@ -22,7 +22,7 @@ namespace CalculatorTests
         [TestMethod]
         public void given_numbersOverflow_when_add_then_throwException()
         {
-            Assert.ThrowsException<Exception>(() => Calculator.Calculate(double.MaxValue, 0.1, '+'));
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MaxValue, 0.1, '+'));
         }
     }
 }
