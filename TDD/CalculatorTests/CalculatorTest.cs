@@ -102,5 +102,11 @@ namespace CalculatorTests
         {
             Assert.ThrowsException<DivideByZeroException>(() => Calculator.Calculate(1, 0, '/'));
         }
+
+        [TestMethod]
+        public void given_invalidOperator_when_Calculating_then_throwException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() => Calculator.Calculate(0, 0, '$'));
+        }
     }
 }
