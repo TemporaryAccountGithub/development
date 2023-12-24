@@ -35,6 +35,11 @@
 
         private static double Multiply (double firstNum, double secondNum)
         {
+            if (double.IsInfinity(firstNum * secondNum))
+            {
+                throw new OverflowException("Product causes double overflow!");
+            }
+
             return firstNum * secondNum;
         }
     }
