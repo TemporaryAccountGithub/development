@@ -4,7 +4,7 @@
     {
         public static double Calculate(double firstNum, double secondNum, char op)
         {
-            return 0;
+            return firstNum + secondNum;
         }
     }
 }
