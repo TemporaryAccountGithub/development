@@ -1,52 +1,30 @@
-# Prerequisites
-*.d
+# Ignore Visual Studio files
+.vs/
+*.vscode/
+*.suo
+*.user
+*.sln.docstates
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+# Ignore build output
+bin/
+obj/
 
-# Linker output
-*.ilk
-*.map
-*.exp
+# Ignore NuGet packages
+packages/
 
-# Precompiled Headers
-*.gch
-*.pch
+# Ignore user-specific files
+*.userprefs
+*.usertasks
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
+# Ignore build-specific files
 *.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
 *.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+# Ignore logs and other generated files
+*.log
+*.cache
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# Ignore Resharper and Rider specific files
+_ReSharper*/
+*.resharper
+*.DotSettings
