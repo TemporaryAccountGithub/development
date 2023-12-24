@@ -17,6 +17,7 @@ namespace CalculatorTests
             Assert.AreEqual(Calculator.Calculate(1, 2, '+'), 3);
             Assert.AreEqual(Calculator.Calculate(-1, -2, '+'), -3);
             Assert.AreEqual(Calculator.Calculate(-1, 2.5, '+'), 1.5);
+            Assert.AreEqual(Calculator.Calculate(-1, 1, '+'), 0);
         }
 
         [TestMethod]
@@ -43,6 +44,7 @@ namespace CalculatorTests
             Assert.AreEqual(Calculator.Calculate(2, 3, '*'), 6);
             Assert.AreEqual(Calculator.Calculate(-2, 5, '*'), -10);
             Assert.AreEqual(Calculator.Calculate(-2.5, -3, '*'), 7.5);
+            Assert.AreEqual(Calculator.Calculate(8, 1, '*'), 8);
         }
 
         [TestMethod]
@@ -69,6 +71,7 @@ namespace CalculatorTests
             Assert.AreEqual(Calculator.Calculate(2, 1, '-'), 1);
             Assert.AreEqual(Calculator.Calculate(2, -1, '-'), 3);
             Assert.AreEqual(Calculator.Calculate(-2, -1, '-'), -1);
+            Assert.AreEqual(Calculator.Calculate(-2, -2, '-'), 0);
         }
 
         [TestMethod]
@@ -95,6 +98,7 @@ namespace CalculatorTests
             Assert.AreEqual(Calculator.Calculate(3, 2, '/'), 1.5);
             Assert.AreEqual(Calculator.Calculate(-6, 8, '/'), -0.75);
             Assert.AreEqual(Calculator.Calculate(-9, -10, '/'), 0.9);
+            Assert.AreEqual(Calculator.Calculate(0, -10, '/'), 0);
         }
 
         [TestMethod]
