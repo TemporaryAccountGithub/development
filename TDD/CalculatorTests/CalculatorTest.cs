@@ -88,5 +88,13 @@ namespace CalculatorTests
         {
             Assert.AreEqual(Calculator.Calculate(1, 1, '/'), 1);
         }
+
+        [TestMethod]
+        public void given_numbers_when_division_then_returnQuotient()
+        {
+            Assert.AreEqual(Calculator.Calculate(3, 2, '/'), 1.5);
+            Assert.AreEqual(Calculator.Calculate(-6, 8, '/'), -0.75);
+            Assert.AreEqual(Calculator.Calculate(-9, -10, '/'), 0.9);
+        }
     }
 }
