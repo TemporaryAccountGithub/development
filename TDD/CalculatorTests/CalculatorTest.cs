@@ -62,5 +62,11 @@ namespace CalculatorTests
         {
             Assert.AreEqual(Calculator.Calculate(0, 0, '-'), 0);
         }
+
+        [TestMethod]
+        public void given_numbers_when_substruct_then_returnDifference()
+        {
+            Assert.AreEqual(Calculator.Calculate(2, 1, '-'), 1);
+        }
     }
 }
