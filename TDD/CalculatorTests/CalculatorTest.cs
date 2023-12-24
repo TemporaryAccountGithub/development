@@ -96,5 +96,11 @@ namespace CalculatorTests
             Assert.AreEqual(Calculator.Calculate(-6, 8, '/'), -0.75);
             Assert.AreEqual(Calculator.Calculate(-9, -10, '/'), 0.9);
         }
+
+        [TestMethod]
+        public void given_numbers_when_dividingByZero_then_throwException()
+        {
+            Assert.ThrowsException<DivideByZeroException>(() => Calculator.Calculate(1, 0, '/'));
+        }
     }
 }
