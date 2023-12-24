@@ -4,17 +4,24 @@
     {
         public static double Calculate(double firstNum, double secondNum, char op)
         {
-            if (firstNum > 0 && secondNum > double.MaxValue - firstNum)
+            if (op == '+')
             {
-                throw new OverflowException("Sum causes double overflow!");
-            }
+                if (firstNum > 0 && secondNum > double.MaxValue - firstNum)
+                {
+                    throw new OverflowException("Sum causes double overflow!");
+                }
 
-            if(firstNum < 0 && secondNum < double.MinValue - firstNum)
+                if (firstNum < 0 && secondNum < double.MinValue - firstNum)
+                {
+                    throw new OverflowException("Sum causes double underflow!");
+                }
+                return firstNum + secondNum;
+            }
+            else
             {
-                throw new OverflowException("Sum causes double underflow!");
+                return firstNum * secondNum;
             }
-
-            return firstNum + secondNum;
+            
         }
     }
 }
