@@ -70,5 +70,11 @@ namespace CalculatorTests
             Assert.AreEqual(Calculator.Calculate(2, -1, '-'), 3);
             Assert.AreEqual(Calculator.Calculate(-2, -1, '-'), -1);
         }
+
+        [TestMethod]
+        public void given_numbersOverflow_when_substruct_then_throwException()
+        {
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MaxValue, -0.1, '-'));
+        }
     }
 }
