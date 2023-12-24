@@ -13,6 +13,9 @@
                 case '*':
                     result = Multiply(firstNum, secondNum);
                     break;
+                case '-':
+                    result = Substruct(firstNum, secondNum);
+                    break;
             }
 
             return result;
@@ -41,6 +44,11 @@
             }
 
             return firstNum * secondNum;
+        }
+
+        private static double Substruct (double firstNum, double secondNum)
+        {
+            return firstNum - secondNum;
         }
     }
 }

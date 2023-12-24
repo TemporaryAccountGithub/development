@@ -67,6 +67,8 @@ namespace CalculatorTests
         public void given_numbers_when_substruct_then_returnDifference()
         {
             Assert.AreEqual(Calculator.Calculate(2, 1, '-'), 1);
+            Assert.AreEqual(Calculator.Calculate(2, -1, '-'), 3);
+            Assert.AreEqual(Calculator.Calculate(-2, -1, '-'), -1);
         }
     }
 }
