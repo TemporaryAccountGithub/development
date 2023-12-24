@@ -56,5 +56,11 @@ namespace CalculatorTests
         {
             Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MinValue, 1.1, '*'));
         }
+
+        [TestMethod]
+        public void given_zeros_when_substruct_then_returnZero()
+        {
+            Assert.AreEqual(Calculator.Calculate(0, 0, '-'), 0);
+        }
     }
 }
