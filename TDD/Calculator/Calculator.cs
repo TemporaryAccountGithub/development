@@ -19,6 +19,8 @@
                 case '/':
                     result = Divide(firstNum, secondNum);
                     break;
+                default:
+                    throw new InvalidOperationException("Invalid operator: " + op);
             }
 
             return result;
