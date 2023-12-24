@@ -48,6 +48,11 @@
 
         private static double Substruct (double firstNum, double secondNum)
         {
+            if (firstNum > 0 && -secondNum > double.MaxValue - firstNum)
+            {
+                throw new OverflowException("Difference causes double overflow!");
+            }
+
             return firstNum - secondNum;
         }
     }
