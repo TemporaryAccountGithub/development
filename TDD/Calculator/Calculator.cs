@@ -54,12 +54,12 @@
         {
             if (firstNum > 0 && secondNum > double.MaxValue - firstNum)
             {
-                throw new OverflowException("Sum causes double overflow!");
+                throw new OverflowException("Sum or substrcution causes double overflow!");
             }
 
             if (firstNum < 0 && secondNum < double.MinValue - firstNum)
             {
-                throw new OverflowException("Sum causes double underflow!");
+                throw new OverflowException("Sum or substrcution causes double underflow!");
             }
         }
 
