@@ -10,5 +10,11 @@ namespace CalculatorTests
         {
             Assert.AreEqual(Calculator.Calculate(0, 0, '+'), 0);
         }
+
+        [TestMethod]
+        public void given_numbers_when_add_then_returnSum()
+        {
+            Assert.AreEqual(Calculator.Calculate(1, 2, '+'), 3);
+        }
     }
 }
