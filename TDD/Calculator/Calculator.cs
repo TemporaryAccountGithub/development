@@ -16,6 +16,9 @@
                 case '-':
                     result = Substruct(firstNum, secondNum);
                     break;
+                case '/':
+                    result = Divide(firstNum, secondNum);
+                    break;
             }
 
             return result;
@@ -56,6 +59,11 @@
             {
                 throw new OverflowException("Sum causes double underflow!");
             }
+        }
+
+        private static double Divide(double firstNum, double secondNum)
+        {
+            return firstNum / secondNum;
         }
     }
 }
