@@ -23,15 +23,7 @@
 
         private static double Add (double firstNum, double secondNum)
         {
-            if (firstNum > 0 && secondNum > double.MaxValue - firstNum)
-            {
-                throw new OverflowException("Sum causes double overflow!");
-            }
-
-            if (firstNum < 0 && secondNum < double.MinValue - firstNum)
-            {
-                throw new OverflowException("Sum causes double underflow!");
-            }
+            DoubleOverflowSumCheck(firstNum, secondNum);
 
             return firstNum + secondNum;
         }
@@ -48,17 +40,22 @@
 
         private static double Substruct (double firstNum, double secondNum)
         {
-            if (firstNum > 0 && -secondNum > double.MaxValue - firstNum)
+            DoubleOverflowSumCheck(firstNum, -secondNum);
+
+            return firstNum - secondNum;
+        }
+
+        private static void DoubleOverflowSumCheck(double firstNum, double secondNum)
+        {
+            if (firstNum > 0 && secondNum > double.MaxValue - firstNum)
             {
-                throw new OverflowException("Difference causes double overflow!");
+                throw new OverflowException("Sum causes double overflow!");
             }
 
-            if (firstNum < 0 && -secondNum < double.MinValue - firstNum)
+            if (firstNum < 0 && secondNum < double.MinValue - firstNum)
             {
                 throw new OverflowException("Sum causes double underflow!");
             }
-
-            return firstNum - secondNum;
         }
     }
 }
