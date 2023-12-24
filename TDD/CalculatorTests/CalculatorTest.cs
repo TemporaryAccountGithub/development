@@ -36,5 +36,13 @@ namespace CalculatorTests
         {
             Assert.AreEqual(Calculator.Calculate(1, 1, '*'), 1);
         }
+
+        [TestMethod]
+        public void given_numbers_when_multiply_then_returnProduct()
+        {
+            Assert.AreEqual(Calculator.Calculate(2, 3, '*'), 6);
+            Assert.AreEqual(Calculator.Calculate(-2, 5, '*'), -10);
+            Assert.AreEqual(Calculator.Calculate(-2.5, -3, '*'), 7.5);
+        }
     }
 }
