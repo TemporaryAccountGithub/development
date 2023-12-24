@@ -82,5 +82,11 @@ namespace CalculatorTests
         {
             Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MinValue, 0.1, '-'));
         }
+
+        [TestMethod]
+        public void given_ones_when_division_then_returnOne()
+        {
+            Assert.AreEqual(Calculator.Calculate(1, 1, '/'), 1);
+        }
     }
 }
