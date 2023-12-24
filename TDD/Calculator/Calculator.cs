@@ -63,6 +63,11 @@
 
         private static double Divide(double firstNum, double secondNum)
         {
+            if (secondNum == 0)
+            {
+                throw new DivideByZeroException("Division by constant zero!");
+            }
+
             return firstNum / secondNum;
         }
     }
