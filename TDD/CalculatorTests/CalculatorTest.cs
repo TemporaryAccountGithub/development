@@ -24,5 +24,11 @@ namespace CalculatorTests
         {
             Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MaxValue, 0.1, '+'));
         }
+
+        [TestMethod]
+        public void given_numbersUnderflow_when_add_then_throwException()
+        {
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MinValue, -0.1, '+'));
+        }
     }
 }
