@@ -5,13 +5,13 @@
         public static double Calculate(string expression)
         {
             expression = expression.Replace("E+", "E");
-            char[] operations = { '+', '-', '*', '/' };
+            char[] operations = { '+', '*', '/', '-' };
             int operatorIndex = -1;
             double firstNum, secondNum;
 
             foreach (char opChar in operations) 
             {
-                operatorIndex = expression.IndexOf(opChar);
+                operatorIndex = expression.IndexOf(opChar, 1);
                 if (operatorIndex > 0 )
                 {
                     if (!double.TryParse(expression.Substring(0, operatorIndex), out firstNum) || !double.TryParse(expression.Substring(operatorIndex + 1), out secondNum))
