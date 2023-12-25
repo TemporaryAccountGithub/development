@@ -37,10 +37,7 @@
         private static double Multiply (double firstNum, double secondNum)
         {
             double product = firstNum * secondNum;
-            if (double.IsInfinity(product))
-            {
-                throw new OverflowException("Product causes double overflow!");
-            }
+            DoubleInfinityCheck(product);
 
             return product;
         }
@@ -60,10 +57,7 @@
             }
 
             double quotient = firstNum / secondNum;
-            if (double.IsInfinity(quotient))
-            {
-                throw new OverflowException("Product causes double overflow!");
-            }
+            DoubleInfinityCheck(quotient);
 
             return quotient;
         }
@@ -78,6 +72,14 @@
             if ((firstNum < 0) && (secondNum < double.MinValue - firstNum))
             {
                 throw new OverflowException("Sum or substrcution causes double underflow!");
+            }
+        }
+
+        private static void DoubleInfinityCheck(double value)
+        {
+            if (double.IsInfinity(value))
+            {
+                throw new OverflowException("Product or division causes double overflow!");
             }
         }
     }
