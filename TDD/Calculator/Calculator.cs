@@ -6,7 +6,7 @@
         {
             double result = 0;
 
-            switch (operatorChar) 
+            switch (operatorChar)
             {
                 case '+':
                     result = Add(firstNum, secondNum);
@@ -27,14 +27,14 @@
             return result;
         }
 
-        private static double Add (double firstNum, double secondNum)
+        private static double Add(double firstNum, double secondNum)
         {
             DoubleOverflowSumCheck(firstNum, secondNum);
 
             return firstNum + secondNum;
         }
 
-        private static double Multiply (double firstNum, double secondNum)
+        private static double Multiply(double firstNum, double secondNum)
         {
             double product = firstNum * secondNum;
             DoubleInfinityCheck(product);
@@ -42,7 +42,7 @@
             return product;
         }
 
-        private static double Substruct (double firstNum, double secondNum)
+        private static double Substruct(double firstNum, double secondNum)
         {
             DoubleOverflowSumCheck(firstNum, -secondNum);
 
