@@ -190,5 +190,11 @@ namespace CalculatorTests
         {
             Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("123++123"));
         }
+
+        [TestMethod]
+        public void given_emptyString_when_Calculating_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate(""));
+        }
     }
 }
