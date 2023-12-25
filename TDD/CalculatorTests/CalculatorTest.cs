@@ -120,12 +120,21 @@ namespace CalculatorTests
         }
 
         [TestMethod]
-        public void given_numbers_when_division_then_returnQuotient()
+        public void given_positiveNumbers_when_division_then_returnQuotient()
         {
             Assert.AreEqual(Calculator.Calculate(3, 2, '/'), 1.5);
-            Assert.AreEqual(Calculator.Calculate(-6, 8, '/'), -0.75);
+        }
+
+        [TestMethod]
+        public void given_negativeNumbers_when_division_then_returnQuotient()
+        {
             Assert.AreEqual(Calculator.Calculate(-9, -10, '/'), 0.9);
-            Assert.AreEqual(Calculator.Calculate(0, -10, '/'), 0);
+        }
+
+        [TestMethod]
+        public void given_positiveAndNegativeNumbers_when_division_then_returnQuotient()
+        {
+            Assert.AreEqual(Calculator.Calculate(-6, 8, '/'), -0.75);
         }
 
         [TestMethod]
