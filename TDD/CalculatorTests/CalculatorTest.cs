@@ -160,5 +160,11 @@ namespace CalculatorTests
         {
             Assert.ThrowsException<InvalidOperationException>(() => Calculator.Calculate("0$0"));
         }
+
+        [TestMethod]
+        public void given_invalidOperatorWithRealOperator_when_Calculating_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("0$/0"));
+        }
     }
 }
