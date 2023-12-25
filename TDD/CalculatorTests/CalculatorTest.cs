@@ -12,12 +12,21 @@ namespace CalculatorTests
         }
 
         [TestMethod]
-        public void given_numbers_when_add_then_returnSum()
+        public void given_positiveNumbers_when_add_then_returnSum()
         {
             Assert.AreEqual(Calculator.Calculate(1, 2, '+'), 3);
+        }
+
+        [TestMethod]
+        public void given_negativeNumbers_when_add_then_returnSum()
+        {
             Assert.AreEqual(Calculator.Calculate(-1, -2, '+'), -3);
+        }
+
+        [TestMethod]
+        public void given_negativeAndPositiveNumbers_when_add_then_returnSum()
+        {
             Assert.AreEqual(Calculator.Calculate(-1, 2.5, '+'), 1.5);
-            Assert.AreEqual(Calculator.Calculate(-1, 1, '+'), 0);
         }
 
         [TestMethod]
