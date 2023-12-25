@@ -4,10 +4,28 @@
     {
         public static double Calculate(string expression)
         {
-            return 0;
+            expression = expression.Replace("E+", "E");
+            char[] operations = { '+', '-', '*', '/' };
+            int operatorIndex = -1;
+            double firstNum, secondNum;
+
+            foreach (char opChar in operations) 
+            {
+                operatorIndex = expression.IndexOf(opChar);
+                if (operatorIndex > 0 )
+                {
+                    if (!double.TryParse(expression.Substring(0, operatorIndex), out firstNum) || !double.TryParse(expression.Substring(operatorIndex + 1), out secondNum))
+                    {
+                        throw new ArgumentException("Invalid expression!");
+                    }
+                    return Calculate(firstNum, secondNum, opChar);
+                }
+            }
+
+            throw new InvalidOperationException("No valid operator in expression");
         }
 
-        public static double Calculate(double firstNum, double secondNum, char operatorChar)
+        private static double Calculate(double firstNum, double secondNum, char operatorChar)
         {
             double result = 0;
 
