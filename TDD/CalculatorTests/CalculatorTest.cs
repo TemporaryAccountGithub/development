@@ -166,5 +166,11 @@ namespace CalculatorTests
         {
             Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("0$/0"));
         }
+
+        [TestMethod]
+        public void given_oneNumber_when_Calculating_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("123+"));
+        }
     }
 }
