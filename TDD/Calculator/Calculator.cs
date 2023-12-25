@@ -11,10 +11,11 @@
 
             foreach (char opChar in operations) 
             {
-                operatorIndex = expression.IndexOf(opChar, 1);
-                if (operatorIndex > 0 )
+                int startIndex = opChar == '-' ? 1 : 0;
+                operatorIndex = expression.IndexOf(opChar, startIndex);
+                if (operatorIndex >= 0 )
                 {
-                    if (!double.TryParse(expression.Substring(0, operatorIndex), out firstNum) || !double.TryParse(expression.Substring(operatorIndex + 1), out secondNum))
+                    if ((operatorIndex == 0) || !double.TryParse(expression.Substring(0, operatorIndex), out firstNum) || !double.TryParse(expression.Substring(operatorIndex + 1), out secondNum))
                     {
                         throw new ArgumentException("Invalid expression!");
                     }
