@@ -35,12 +35,13 @@
 
         private static double Multiply (double firstNum, double secondNum)
         {
-            if (double.IsInfinity(firstNum * secondNum))
+            double product = firstNum * secondNum;
+            if (double.IsInfinity(product))
             {
                 throw new OverflowException("Product causes double overflow!");
             }
 
-            return firstNum * secondNum;
+            return product;
         }
 
         private static double Substruct (double firstNum, double secondNum)
@@ -48,6 +49,16 @@
             DoubleOverflowSumCheck(firstNum, -secondNum);
 
             return firstNum - secondNum;
+        }
+
+        private static double Divide(double firstNum, double secondNum)
+        {
+            if (secondNum == 0)
+            {
+                throw new DivideByZeroException("Division by constant zero!");
+            }
+
+            return firstNum / secondNum;
         }
 
         private static void DoubleOverflowSumCheck(double firstNum, double secondNum)
@@ -61,16 +72,6 @@
             {
                 throw new OverflowException("Sum or substrcution causes double underflow!");
             }
-        }
-
-        private static double Divide(double firstNum, double secondNum)
-        {
-            if (secondNum == 0)
-            {
-                throw new DivideByZeroException("Division by constant zero!");
-            }
-
-            return firstNum / secondNum;
         }
     }
 }
