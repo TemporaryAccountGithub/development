@@ -180,6 +180,12 @@ namespace CalculatorTests
         }
 
         [TestMethod]
+        public void given_OperationAndExpression_when_Calculating_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("*123+12"));
+        }
+
+        [TestMethod]
         public void given_MultipleOperations_when_Calculating_then_throwException()
         {
             Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("123+*123"));
