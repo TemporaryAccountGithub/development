@@ -13,15 +13,16 @@
             char[] operations = { '+', '*', '/', '-' };
             int operatorIndex = -1;
             double firstNum, secondNum;
+            string firstNumString, secondNumString;
 
-            foreach (char opChar in operations) 
+            foreach (char opChar in operations)
             {
                 int startIndex = opChar == '-' ? 1 : 0;
                 operatorIndex = expression.IndexOf(opChar, startIndex);
-                if (operatorIndex >= 0 )
+                if (operatorIndex >= 0)
                 {
-                    string firstNumString = expression.Substring(0, operatorIndex);
-                    string secondNumString = expression.Substring(operatorIndex + 1);
+                    firstNumString = expression.Substring(0, operatorIndex);
+                    secondNumString = expression.Substring(operatorIndex + 1);
 
                     if ((operatorIndex == 0) || !double.TryParse(firstNumString, out firstNum) || !double.TryParse(secondNumString, out secondNum))
                     {
