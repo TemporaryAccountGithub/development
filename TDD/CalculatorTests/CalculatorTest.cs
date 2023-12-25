@@ -144,9 +144,15 @@ namespace CalculatorTests
         }
 
         [TestMethod]
-        public void given_numbersOverflow_when_dividingByZero_then_throwException()
+        public void given_numbersOverflow_when_dividing_then_throwException()
         {
             Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MaxValue, 0.9, '/'));
+        }
+
+        [TestMethod]
+        public void given_numbersUnderflow_when_dividing_then_throwException()
+        {
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MinValue, 0.9, '/'));
         }
 
         [TestMethod]
