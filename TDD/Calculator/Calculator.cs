@@ -59,7 +59,13 @@
                 throw new DivideByZeroException("Division by constant zero!");
             }
 
-            return firstNum / secondNum;
+            double quotient = firstNum / secondNum;
+            if (double.IsInfinity(quotient))
+            {
+                throw new OverflowException("Product causes double overflow!");
+            }
+
+            return quotient;
         }
 
         private static void DoubleOverflowSumCheck(double firstNum, double secondNum)
