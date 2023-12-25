@@ -144,6 +144,12 @@ namespace CalculatorTests
         }
 
         [TestMethod]
+        public void given_numbersOverflow_when_dividingByZero_then_throwException()
+        {
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MaxValue, 0.9, '/'));
+        }
+
+        [TestMethod]
         public void given_invalidOperator_when_Calculating_then_throwException()
         {
             Assert.ThrowsException<InvalidOperationException>(() => Calculator.Calculate(0, 0, '$'));
