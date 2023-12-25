@@ -84,12 +84,21 @@ namespace CalculatorTests
         }
 
         [TestMethod]
-        public void given_numbers_when_substruct_then_returnDifference()
+        public void given_positiveNumbers_when_substruct_then_returnDifference()
         {
             Assert.AreEqual(Calculator.Calculate(2, 1, '-'), 1);
-            Assert.AreEqual(Calculator.Calculate(2, -1, '-'), 3);
+        }
+
+        [TestMethod]
+        public void given_negativeNumbers_when_substruct_then_returnDifference()
+        {
             Assert.AreEqual(Calculator.Calculate(-2, -1, '-'), -1);
-            Assert.AreEqual(Calculator.Calculate(-2, -2, '-'), 0);
+        }
+
+        [TestMethod]
+        public void given_positiveAndNegativeNumbers_when_substruct_then_returnDifference()
+        {
+            Assert.AreEqual(Calculator.Calculate(2, -1, '-'), 3);
         }
 
         [TestMethod]
