@@ -2,10 +2,10 @@
 {
     public class Calculator
     {
-        public static double Calculate(double firstNum, double secondNum, char op)
+        public static double Calculate(double firstNum, double secondNum, char operatorChar)
         {
             double result = 0;
-            switch (op) 
+            switch (operatorChar) 
             {
                 case '+':
                     result = Add(firstNum, secondNum);
@@ -20,7 +20,7 @@
                     result = Divide(firstNum, secondNum);
                     break;
                 default:
-                    throw new InvalidOperationException("Invalid operator: " + op);
+                    throw new InvalidOperationException("Invalid operator: " + operatorChar);
             }
 
             return result;
