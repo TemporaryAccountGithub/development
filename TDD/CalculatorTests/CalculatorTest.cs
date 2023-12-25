@@ -48,12 +48,21 @@ namespace CalculatorTests
         }
 
         [TestMethod]
-        public void given_numbers_when_multiply_then_returnProduct()
+        public void given_positiveNumbers_when_multiply_then_returnProduct()
         {
             Assert.AreEqual(Calculator.Calculate(2, 3, '*'), 6);
-            Assert.AreEqual(Calculator.Calculate(-2, 5, '*'), -10);
+        }
+
+        [TestMethod]
+        public void given_negativeNumbers_when_multiply_then_returnProduct()
+        {
             Assert.AreEqual(Calculator.Calculate(-2.5, -3, '*'), 7.5);
-            Assert.AreEqual(Calculator.Calculate(8, 1, '*'), 8);
+        }
+
+        [TestMethod]
+        public void given_negativeAndPositiveNumbers_when_multiply_then_returnProduct()
+        {
+            Assert.AreEqual(Calculator.Calculate(-2, 5, '*'), -10);
         }
 
         [TestMethod]
