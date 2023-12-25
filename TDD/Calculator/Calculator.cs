@@ -5,6 +5,7 @@
         public static double Calculate(double firstNum, double secondNum, char operatorChar)
         {
             double result = 0;
+
             switch (operatorChar) 
             {
                 case '+':
