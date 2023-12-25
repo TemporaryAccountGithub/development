@@ -15,10 +15,19 @@
                 operatorIndex = expression.IndexOf(opChar, startIndex);
                 if (operatorIndex >= 0 )
                 {
-                    if ((operatorIndex == 0) || !double.TryParse(expression.Substring(0, operatorIndex), out firstNum) || !double.TryParse(expression.Substring(operatorIndex + 1), out secondNum))
+                    string firstNumString = expression.Substring(0, operatorIndex);
+                    string secondNumString = expression.Substring(operatorIndex + 1);
+
+                    if ((operatorIndex == 0) || !double.TryParse(firstNumString, out firstNum) || !double.TryParse(secondNumString, out secondNum))
                     {
                         throw new ArgumentException("Invalid expression!");
                     }
+
+                    if (firstNumString[0] == '+' || secondNumString[0] == '+')
+                    {
+                        throw new ArgumentException("Requirements not allow +num as number!");
+                    }
+
                     return Calculate(firstNum, secondNum, opChar);
                 }
             }
