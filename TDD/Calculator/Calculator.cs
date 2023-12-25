@@ -63,12 +63,12 @@
 
         private static void DoubleOverflowSumCheck(double firstNum, double secondNum)
         {
-            if (firstNum > 0 && secondNum > double.MaxValue - firstNum)
+            if ((firstNum > 0) && (secondNum > double.MaxValue - firstNum))
             {
                 throw new OverflowException("Sum or substrcution causes double overflow!");
             }
 
-            if (firstNum < 0 && secondNum < double.MinValue - firstNum)
+            if ((firstNum < 0) && (secondNum < double.MinValue - firstNum))
             {
                 throw new OverflowException("Sum or substrcution causes double underflow!");
             }
