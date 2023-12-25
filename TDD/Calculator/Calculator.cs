@@ -4,6 +4,11 @@
     {
         public static double Calculate(string expression)
         {
+            if (expression == "")
+            {
+                throw new ArgumentException("Empty String!");
+            }
+
             expression = expression.Replace("E+", "E");
             char[] operations = { '+', '*', '/', '-' };
             int operatorIndex = -1;
