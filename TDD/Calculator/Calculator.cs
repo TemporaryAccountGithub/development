@@ -2,6 +2,11 @@
 {
     public class Calculator
     {
+        public static double Calculate(string expression)
+        {
+            return 0;
+        }
+
         public static double Calculate(double firstNum, double secondNum, char operatorChar)
         {
             double result = 0;
