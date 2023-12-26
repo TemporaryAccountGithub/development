@@ -2,7 +2,14 @@
 {
     public class Calculator
     {
-        private static readonly char[] OPERATIONS = { '+', '*', '/', '-' };
+        private static class CharOperations
+        {
+            public static char Add = '+';
+            public static char Substruct = '-';
+            public static char Multiply = '*';
+            public static char Divide = '/';
+        }
+        private static readonly char[] VALID_OPERATIONS = { CharOperations.Add, CharOperations.Multiply, CharOperations.Divide, CharOperations.Substruct };
 
         public static double Calculate(string expression)
         {
@@ -16,9 +23,9 @@
             double firstNum, secondNum;
             string firstNumString, secondNumString;
 
-            foreach (char operatorChar in OPERATIONS)
+            foreach (char operatorChar in VALID_OPERATIONS)
             {
-                int startIndex = operatorChar == '-' ? 1 : 0;
+                int startIndex = operatorChar == CharOperations.Substruct ? 1 : 0;
                 operatorIndex = expression.IndexOf(operatorChar, startIndex);
                 if (operatorIndex >= 0)
                 {
@@ -30,7 +37,7 @@
                         throw new ArgumentException("Invalid expression!");
                     }
 
-                    if (firstNumString[0] == '+' || secondNumString[0] == '+')
+                    if (firstNumString[0] == CharOperations.Add || secondNumString[0] == CharOperations.Add)
                     {
                         throw new ArgumentException("Requirements not allow +num as number!");
                     }
