@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace CalculatorLibrary
 {
@@ -11,7 +12,7 @@ namespace CalculatorLibrary
             public const char Multiply = '*';
             public const char Divide = '/';
         }
-       
+
         public static double Calculate(string expression)
         {
             if (expression == "")
@@ -21,10 +22,57 @@ namespace CalculatorLibrary
 
             expression = expression.Replace("E+", "E");
 
+            List<double> numbers = new List<double>();
+            List<char> operations = new List<char>();
             const string ValidPattern = @"^(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?([-+*/](-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?))*)$";
-            if (Regex.IsMatch(expression, ValidPattern))
+            const string MatchPattern = @"(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)|([+\-*/])";
+
+            if (Regex.IsMatch(expression, ValidPattern))//change to not -> throw
             {
-                return 0;
+                MatchCollection matches = Regex.Matches(expression, MatchPattern);
+                numbers.Add(double.Parse(matches[0].Value));
+
+                for (int i = 1; i < matches.Count; i += 2)//seprate to functions and think about var locations
+                {
+                    string currentMatch = matches[i].Value;
+                    if (currentMatch.Length > 1)//fix string before? in case of "-" and not "+-"
+                    {
+                        operations.Add(CharOperations.Add);
+                        numbers.Add(double.Parse(matches[i].Value));
+                    }
+                    else
+                    {
+                        operations.Add(matches[i].Value[0]);
+                        numbers.Add(double.Parse(matches[i + 1].Value));
+                    }
+                }
+
+                List<double> numbersLowPriority = new List<double>();
+                List<char> operationsLowPriority = new List<char>();
+                numbersLowPriority.Add(numbers.First());
+
+                for (int i = 0; i < operations.Count; i++)
+                {
+                    if ((i < operations.Count - 1) && IsHighPriorityOperation(operations[i]))
+                    {
+                        double result = Calculate(numbersLowPriority.Last(), numbers[i + 1], operations[i]);
+                        numbersLowPriority.Add(result);
+                    }
+                    else
+                    {
+                        if (operations[i] == CharOperations.Add)
+                        {
+                            numbersLowPriority.Add(numbers[i + 1]);
+                        }
+                        else //if substruct?
+                        {
+                            double opposite = Calculate(0, numbers[i+1], operations[i]);
+                            numbersLowPriority.Add(opposite);
+                        }
+                    }
+                }
+
+                return numbersLowPriority.Sum();
             }
             else
             {
@@ -51,7 +99,7 @@ namespace CalculatorLibrary
                     result = Divide(firstNum, secondNum);
                     break;
                 default:
-                    throw new InvalidOperationException("Invalid operator: " + operatorChar);
+                    throw new ArgumentException("Invalid operator: " + operatorChar);
             }
 
             return result;
@@ -111,6 +159,11 @@ namespace CalculatorLibrary
             {
                 throw new OverflowException("Product or division causes double overflow!");
             }
+        }
+
+        private static bool IsHighPriorityOperation(char operationChar) 
+        {
+            return operationChar == CharOperations.Multiply || operationChar == CharOperations.Divide;
         }
     }
 }
