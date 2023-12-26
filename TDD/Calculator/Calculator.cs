@@ -9,6 +9,7 @@
             public static char Multiply { get; } = '*';
             public static char Divide { get; } = '/';
         }
+
         private static readonly char[] VALID_OPERATIONS = { CharOperations.Add, CharOperations.Multiply, CharOperations.Divide, CharOperations.Substruct };
 
         public static double Calculate(string expression)
