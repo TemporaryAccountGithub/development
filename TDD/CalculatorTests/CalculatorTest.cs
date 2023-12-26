@@ -158,7 +158,7 @@ namespace CalculatorTests
         [TestMethod]
         public void given_invalidOperator_when_Calculating_then_throwException()
         {
-            Assert.ThrowsException<InvalidOperationException>(() => Calculator.Calculate(0, 0, '$'));
+            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate(0, 0, '$'));
         }
 
         [TestMethod]
@@ -322,7 +322,7 @@ namespace CalculatorTests
         [TestMethod]
         public void given_invalidOperatorString_when_Calculating_then_throwException()
         {
-            Assert.ThrowsException<InvalidOperationException>(() => Calculator.Calculate("0$0"));
+            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("0$0"));
         }
 
         [TestMethod]
