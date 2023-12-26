@@ -364,5 +364,11 @@ namespace CalculatorTests
         {
             Assert.AreEqual(Calculator.Calculate("5.+5"), 10);
         }
+
+        [TestMethod]
+        public void given_DotNumberString_when_Calculating_then_returnCalculation()
+        {
+            Assert.AreEqual(Calculator.Calculate(".5+.5"), 1);
+        }
     }
 }
