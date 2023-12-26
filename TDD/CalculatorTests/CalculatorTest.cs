@@ -370,5 +370,11 @@ namespace CalculatorTests
         {
             Assert.AreEqual(Calculator.Calculate(".5+.5"), 1);
         }
+
+        [TestMethod]
+        public void given_MultipleSubOperationOnStartString_when_Calculating_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("--5-3"));
+        }
     }
 }
