@@ -2,6 +2,8 @@
 {
     public class Calculator
     {
+        private static readonly char[] OPERATIONS = { '+', '*', '/', '-' };
+
         public static double Calculate(string expression)
         {
             if (expression == "")
@@ -10,15 +12,14 @@
             }
 
             expression = expression.Replace("E+", "E");
-            char[] operations = { '+', '*', '/', '-' };
             int operatorIndex = -1;
             double firstNum, secondNum;
             string firstNumString, secondNumString;
 
-            foreach (char opChar in operations)
+            foreach (char operatorChar in OPERATIONS)
             {
-                int startIndex = opChar == '-' ? 1 : 0;
-                operatorIndex = expression.IndexOf(opChar, startIndex);
+                int startIndex = operatorChar == '-' ? 1 : 0;
+                operatorIndex = expression.IndexOf(operatorChar, startIndex);
                 if (operatorIndex >= 0)
                 {
                     firstNumString = expression.Substring(0, operatorIndex);
@@ -34,7 +35,7 @@
                         throw new ArgumentException("Requirements not allow +num as number!");
                     }
 
-                    return Calculate(firstNum, secondNum, opChar);
+                    return Calculate(firstNum, secondNum, operatorChar);
                 }
             }
 
