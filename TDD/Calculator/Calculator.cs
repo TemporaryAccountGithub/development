@@ -10,7 +10,7 @@
             public const char Divide = '/';
         }
         
-        private static readonly char[] VALID_OPERATIONS = { CharOperations.Add, CharOperations.Multiply, CharOperations.Divide, CharOperations.Substruct };
+        private static readonly char[] ValidOperations = { CharOperations.Add, CharOperations.Multiply, CharOperations.Divide, CharOperations.Substruct };
 
         public static double Calculate(string expression)
         {
@@ -24,7 +24,7 @@
             double firstNum, secondNum;
             string firstNumString, secondNumString;
 
-            foreach (char operatorChar in VALID_OPERATIONS)
+            foreach (char operatorChar in ValidOperations)
             {
                 int startIndex = operatorChar == CharOperations.Substruct ? 1 : 0;
                 operatorIndex = expression.IndexOf(operatorChar, startIndex);
