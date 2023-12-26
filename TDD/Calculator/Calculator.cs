@@ -4,12 +4,12 @@
     {
         private static class CharOperations
         {
-            public static char Add { get; } = '+';
-            public static char Substruct { get; } = '-';
-            public static char Multiply { get; } = '*';
-            public static char Divide { get; } = '/';
+            public const char Add = '+';
+            public const char Substruct = '-';
+            public const char Multiply = '*';
+            public const char Divide = '/';
         }
-
+        
         private static readonly char[] VALID_OPERATIONS = { CharOperations.Add, CharOperations.Multiply, CharOperations.Divide, CharOperations.Substruct };
 
         public static double Calculate(string expression)
@@ -56,16 +56,16 @@
 
             switch (operatorChar)
             {
-                case '+':
+                case CharOperations.Add:
                     result = Add(firstNum, secondNum);
                     break;
-                case '*':
+                case CharOperations.Multiply:
                     result = Multiply(firstNum, secondNum);
                     break;
-                case '-':
+                case CharOperations.Substruct:
                     result = Substruct(firstNum, secondNum);
                     break;
-                case '/':
+                case CharOperations.Divide:
                     result = Divide(firstNum, secondNum);
                     break;
                 default:
