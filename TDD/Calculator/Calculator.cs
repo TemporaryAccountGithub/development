@@ -2,22 +2,70 @@
 {
     public class Calculator
     {
+        private static class CharOperations
+        {
+            public const char Add = '+';
+            public const char Substruct = '-';
+            public const char Multiply = '*';
+            public const char Divide = '/';
+        }
+        
+        private static readonly char[] ValidOperations = { CharOperations.Add, CharOperations.Multiply, CharOperations.Divide, CharOperations.Substruct };
+
+        public static double Calculate(string expression)
+        {
+            if (expression == "")
+            {
+                throw new ArgumentException("Empty String!");
+            }
+
+            expression = expression.Replace("E+", "E");
+            int operatorIndex = -1;
+            double firstNum, secondNum;
+            string firstNumString, secondNumString;
+
+            foreach (char operatorChar in ValidOperations)
+            {
+                int startIndex = operatorChar == CharOperations.Substruct ? 1 : 0;
+                operatorIndex = expression.IndexOf(operatorChar, startIndex);
+                if (operatorIndex >= 0)
+                {
+                    firstNumString = expression.Substring(0, operatorIndex);
+                    secondNumString = expression.Substring(operatorIndex + 1);
+
+                    if ((operatorIndex == 0) || !double.TryParse(firstNumString, out firstNum) || !double.TryParse(secondNumString, out secondNum))
+                    {
+                        throw new ArgumentException("Invalid expression!");
+                    }
+
+                    if (firstNumString[0] == CharOperations.Add || secondNumString[0] == CharOperations.Add)
+                    {
+                        throw new ArgumentException("Requirements not allow +num as number!");
+                    }
+
+                    return Calculate(firstNum, secondNum, operatorChar);
+                }
+            }
+
+            throw new InvalidOperationException("No valid operator in expression");
+        }
+
         public static double Calculate(double firstNum, double secondNum, char operatorChar)
         {
             double result = 0;
 
             switch (operatorChar)
             {
-                case '+':
+                case CharOperations.Add:
                     result = Add(firstNum, secondNum);
                     break;
-                case '*':
+                case CharOperations.Multiply:
                     result = Multiply(firstNum, secondNum);
                     break;
-                case '-':
+                case CharOperations.Substruct:
                     result = Substruct(firstNum, secondNum);
                     break;
-                case '/':
+                case CharOperations.Divide:
                     result = Divide(firstNum, secondNum);
                     break;
                 default:
