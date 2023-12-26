@@ -49,7 +49,7 @@
             throw new InvalidOperationException("No valid operator in expression");
         }
 
-        private static double Calculate(double firstNum, double secondNum, char operatorChar)
+        public static double Calculate(double firstNum, double secondNum, char operatorChar)
         {
             double result = 0;
 
