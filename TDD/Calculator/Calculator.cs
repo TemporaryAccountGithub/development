@@ -39,6 +39,7 @@ namespace CalculatorLibrary
                     {
                         operations.Add(CharOperations.Add);
                         numbers.Add(double.Parse(matches[i].Value));
+                        i -= 1;
                     }
                     else
                     {
