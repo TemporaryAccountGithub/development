@@ -384,5 +384,13 @@ namespace CalculatorTests
         {
             Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("--5-3"));
         }
+
+        [TestMethod]
+        public void test()
+        {
+            double result = -14.5;
+            string str = "-2*2*2+-2-3*2--3/2";
+            Assert.AreEqual(Calculator.Calculate(str), result);
+        }
     }
 }

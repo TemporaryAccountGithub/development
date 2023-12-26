@@ -51,7 +51,7 @@ namespace CalculatorLibrary
                 List<double> numbersLowPriority = new List<double>();
                 numbersLowPriority.Add(numbers.First());
 
-                for (int i = 0; i < operations.Count; i++)
+                for (int i = 0; i < operations.Count; i++)//do this in prev for?
                 {
                     if (IsHighPriorityOperation(operations[i]))
                     {
