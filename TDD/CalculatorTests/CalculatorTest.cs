@@ -188,13 +188,15 @@ namespace CalculatorTests
         [TestMethod]
         public void given_numbersOverflowString_when_add_then_throwException()
         {
-            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MaxValue.ToString("R") + "+0.1"));
+            string overflowExpression = double.MaxValue.ToString("R") + "+0.1";
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(overflowExpression));
         }
 
         [TestMethod]
         public void given_numbersUnderflowString_when_add_then_throwException()
         {
-            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MinValue.ToString("R") + "+-0.1"));
+            string underflowExpression = double.MinValue.ToString("R") + "+-0.1";
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(underflowExpression));
         }
 
         [TestMethod]
@@ -224,13 +226,15 @@ namespace CalculatorTests
         [TestMethod]
         public void given_numbersOverflowString_when_multiply_then_throwException()
         {
-            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MaxValue.ToString("R") + "*1.1"));
+            string overflowExpression = double.MaxValue.ToString("R") + "*1.1";
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(overflowExpression));
         }
 
         [TestMethod]
         public void given_numbersUnderflowString_when_multiply_then_throwException()
         {
-            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MinValue.ToString("R") + "*1.1"));
+            string underflowExpression = double.MinValue.ToString("R") + "*1.1";
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(underflowExpression));
         }
 
         [TestMethod]
@@ -260,13 +264,15 @@ namespace CalculatorTests
         [TestMethod]
         public void given_numbersOverflowString_when_substruct_then_throwException()
         {
-            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MaxValue.ToString("R") + "--0.1"));
+            string overflowExpression = double.MaxValue.ToString("R") + "--0.1";
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(overflowExpression));
         }
 
         [TestMethod]
         public void given_numbersUnderflowString_when_substruct_then_throwException()
         {
-            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MinValue.ToString("R") + "-0.1"));
+            string underflowExpression = double.MinValue.ToString("R") + "-0.1";
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(underflowExpression));
         }
 
         [TestMethod]
@@ -302,13 +308,15 @@ namespace CalculatorTests
         [TestMethod]
         public void given_numbersOverflowString_when_dividing_then_throwException()
         {
-            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MaxValue.ToString("R") + "/0.9"));
+            string overflowExpression = double.MaxValue.ToString("R") + "/0.9";
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(overflowExpression));
         }
 
         [TestMethod]
         public void given_numbersUnderflowString_when_dividing_then_throwException()
         {
-            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(double.MinValue.ToString("R") + "/0.9"));
+            string underflowExpression = double.MinValue.ToString("R") + "/0.9";
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate(underflowExpression));
         }
 
         [TestMethod]
