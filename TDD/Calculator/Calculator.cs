@@ -1,4 +1,6 @@
-﻿namespace CalculatorLibrary
+﻿using System.Text.RegularExpressions;
+
+namespace CalculatorLibrary
 {
     public class Calculator
     {
@@ -9,9 +11,7 @@
             public const char Multiply = '*';
             public const char Divide = '/';
         }
-        
-        private static readonly char[] ValidOperations = { CharOperations.Add, CharOperations.Multiply, CharOperations.Divide, CharOperations.Substruct };
-
+       
         public static double Calculate(string expression)
         {
             if (expression == "")
@@ -20,34 +20,16 @@
             }
 
             expression = expression.Replace("E+", "E");
-            int operatorIndex = -1;
-            double firstNum, secondNum;
-            string firstNumString, secondNumString;
 
-            foreach (char operatorChar in ValidOperations)
+            const string ValidPattern = @"^(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?([-+*/](-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?))*)$";
+            if (Regex.IsMatch(expression, ValidPattern))
             {
-                int startIndex = operatorChar == CharOperations.Substruct ? 1 : 0;
-                operatorIndex = expression.IndexOf(operatorChar, startIndex);
-                if (operatorIndex >= 0)
-                {
-                    firstNumString = expression.Substring(0, operatorIndex);
-                    secondNumString = expression.Substring(operatorIndex + 1);
-
-                    if ((operatorIndex == 0) || !double.TryParse(firstNumString, out firstNum) || !double.TryParse(secondNumString, out secondNum))
-                    {
-                        throw new ArgumentException("Invalid expression!");
-                    }
-
-                    if (firstNumString[0] == CharOperations.Add || secondNumString[0] == CharOperations.Add)
-                    {
-                        throw new ArgumentException("Requirements not allow +num as number!");
-                    }
-
-                    return Calculate(firstNum, secondNum, operatorChar);
-                }
+                return 0;
             }
-
-            throw new InvalidOperationException("No valid operator in expression");
+            else
+            {
+                throw new ArgumentException("Invalid expression!");
+            }
         }
 
         public static double Calculate(double firstNum, double secondNum, char operatorChar)
