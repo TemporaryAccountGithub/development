@@ -4,10 +4,10 @@
     {
         private static class CharOperations
         {
-            public static char Add = '+';
-            public static char Substruct = '-';
-            public static char Multiply = '*';
-            public static char Divide = '/';
+            public static char Add { get; } = '+';
+            public static char Substruct { get; } = '-';
+            public static char Multiply { get; } = '*';
+            public static char Divide { get; } = '/';
         }
         private static readonly char[] VALID_OPERATIONS = { CharOperations.Add, CharOperations.Multiply, CharOperations.Divide, CharOperations.Substruct };
 
