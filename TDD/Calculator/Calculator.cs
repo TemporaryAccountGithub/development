@@ -13,9 +13,6 @@ namespace CalculatorLibrary
             public const char Divide = '/';
         }
 
-        private const string ValidPattern = @"^(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?([-+*/](-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?))+)$";
-        private const string MatchPattern = @"((?<=(\d|\.))[+\-*/])|(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
-
         public static double Calculate(string expression)
         {
             List<double> numbersToAdd = new List<double>();
@@ -135,14 +132,6 @@ namespace CalculatorLibrary
             if (double.IsInfinity(value))
             {
                 throw new OverflowException("Product or division causes double overflow!");
-            }
-        }
-
-        private static void ValidateRegexExpression(string expression)
-        {
-            if (!Regex.IsMatch(expression, ValidPattern))
-            {
-                throw new ArgumentException("Invalid expression!");
             }
         }
 
