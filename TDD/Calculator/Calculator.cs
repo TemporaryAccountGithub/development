@@ -25,7 +25,7 @@ namespace CalculatorLibrary
             List<double> numbers = new List<double>();
             List<char> operations = new List<char>();
             const string ValidPattern = @"^(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?([-+*/](-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?))*)$";
-            const string MatchPattern = @"(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)|([+\-*/])";
+            const string MatchPattern = @"((?<=(\d|\.))[+\-*/])|(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
 
             if (Regex.IsMatch(expression, ValidPattern))//change to not -> throw
             {
@@ -34,14 +34,6 @@ namespace CalculatorLibrary
 
                 for (int i = 1; i < matches.Count; i += 2)//seprate to functions and think about var locations
                 {
-                    string currentMatch = matches[i].Value;
-                    if (currentMatch.Length > 1)//fix string before? in case of "-" and not "+-"
-                    {
-                        operations.Add(CharOperations.Add);
-                        numbers.Add(double.Parse(matches[i].Value));
-                        i -= 1;
-                    }
-                    else
                     {
                         operations.Add(matches[i].Value[0]);
                         numbers.Add(double.Parse(matches[i + 1].Value));
