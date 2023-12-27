@@ -388,33 +388,25 @@ namespace CalculatorTests
         [TestMethod]
         public void given_validLongString_when_Calculate_then_returnResult()
         {
-            string expression = "2*3+4";
-            double result = 10;
-            Assert.AreEqual(Calculator.Calculate(expression), result);
+            Assert.AreEqual(Calculator.Calculate("2*3+4"), 10);
         }
 
         [TestMethod]
         public void given_validLongStringOrderMatters_when_Calculate_then_returnResult()
         {
-            string expression = "2+3*4";
-            double result = 14;
-            Assert.AreEqual(Calculator.Calculate(expression), result);
+            Assert.AreEqual(Calculator.Calculate("2+3*4"), 14);
         }
 
         [TestMethod]
         public void given_validLongStringStartsWithNegative_when_Calculate_then_returnResult()
         {
-            string expression = "-2+3*4";
-            double result = 10;
-            Assert.AreEqual(Calculator.Calculate(expression), result);
+            Assert.AreEqual(Calculator.Calculate("-2+3*4"), 10);
         }
 
         [TestMethod]
         public void given_validLongStringAddAndSubOperatorsAndSubAlone_when_Calculate_then_returnResult()
         {
-            string expression = "2+-3-4";
-            double result = -5;
-            Assert.AreEqual(Calculator.Calculate(expression), result);
+            Assert.AreEqual(Calculator.Calculate("2+-3-4"), -5);
         }
 
         [TestMethod]
