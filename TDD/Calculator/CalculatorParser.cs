@@ -2,12 +2,12 @@
 
 namespace CalculatorLibrary
 {
-    internal class CalculatorParser
+    public class CalculatorParser : ICalculatorParser
     {
         private const string ValidPattern = @"^(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?([-+*/](-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?))+)$";
         private const string MatchPattern = @"((?<=(\d|\.))[+\-*/])|(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
 
-        public static List<string> ParseExpression(string expression)
+        public List<string> ParseExpression(string expression)
         {
             expression = expression.Replace("E+", "E");
             ValidateRegexExpression(expression);
@@ -16,7 +16,7 @@ namespace CalculatorLibrary
             return matches.Cast<Match>().Select(m => m.Value).ToList();
         }
 
-        private static void ValidateRegexExpression(string expression)
+        private void ValidateRegexExpression(string expression)
         {
             if (!Regex.IsMatch(expression, ValidPattern))
             {

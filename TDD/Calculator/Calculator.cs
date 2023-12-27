@@ -2,6 +2,7 @@
 {
     public class Calculator
     {
+        private static ICalculatorParser calculatorParser = new CalculatorParser();
         private static class CharOperations
         {
             public const char Add = '+';
@@ -10,10 +11,15 @@
             public const char Divide = '/';
         }
 
+        public static void SetCalculatorParser(ICalculatorParser parser)
+        {
+            calculatorParser = parser;
+        }
+
         public static double Calculate(string expression)
         {
             List<double> numbersToAdd = new List<double>();
-            List<string> expressionValues = CalculatorParser.ParseExpression(expression);
+            List<string> expressionValues = calculatorParser.ParseExpression(expression);
 
             numbersToAdd.Add(double.Parse(expressionValues[0]));
 

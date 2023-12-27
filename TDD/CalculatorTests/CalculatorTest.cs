@@ -1,4 +1,5 @@
 using CalculatorLibrary;
+using Moq;
 
 namespace CalculatorTests
 {
@@ -415,6 +416,22 @@ namespace CalculatorTests
             double result = -207.5;
             string expression = "-.5-2.*2*2+-2E+2-3*2--3/2+3*2-.5";
             Assert.AreEqual(Calculator.Calculate(expression), result);
+        }
+
+        [TestMethod]
+        public void given_validComplexLongString_when_CalculateWithMock_then_returnResult()
+        {
+            var mockParser = new Mock<ICalculatorParser>();
+            mockParser.Setup(parser => parser.ParseExpression(It.IsAny<string>())).Returns(new List<string> { "1", "+", "2" });
+            Calculator.SetCalculatorParser(mockParser.Object);
+
+            double expected = 3;
+            string invalidExpression = "1+2++";
+            double result = Calculator.Calculate(invalidExpression);
+
+            Assert.AreEqual(result, expected);
+
+            Calculator.SetCalculatorParser(new CalculatorParser());
         }
     }
 }
