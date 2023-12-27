@@ -40,10 +40,12 @@ namespace CalculatorLibrary
                             double result = Calculate(firstNum, nextNumber, operationChar);
                             numbersToAdd[numbersToAdd.Count - 1] = result;
                             break;
+
                         case CharOperations.Substruct:
                             double opposite = Calculate(0, nextNumber, operationChar);
                             numbersToAdd.Add(opposite);
                             break;
+
                         case CharOperations.Add:
                             numbersToAdd.Add(nextNumber);
                             break;
@@ -63,15 +65,19 @@ namespace CalculatorLibrary
                 case CharOperations.Add:
                     result = Add(firstNum, secondNum);
                     break;
+
                 case CharOperations.Multiply:
                     result = Multiply(firstNum, secondNum);
                     break;
+
                 case CharOperations.Substruct:
                     result = Substruct(firstNum, secondNum);
                     break;
+
                 case CharOperations.Divide:
                     result = Divide(firstNum, secondNum);
                     break;
+
                 default:
                     throw new ArgumentException("Invalid operator: " + operatorChar);
             }
