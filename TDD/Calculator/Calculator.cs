@@ -1,7 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using System.Collections.Generic;
-
-namespace CalculatorLibrary
+﻿namespace CalculatorLibrary
 {
     public class Calculator
     {
