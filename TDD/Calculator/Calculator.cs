@@ -19,40 +19,17 @@
 
         public static double Calculate(string expression)
         {
-            List<double> numbersToAdd = new List<double>();
-            List<string> expressionValues = calculatorParser.ParseExpression(expression);
+            List<Func<char, bool>> priorities = new List<Func<char, bool>> { IsTopPriority, IsHighPriority, IsLastPriority };
+            List<double> numbers;
+            List<char> operations;
+            (numbers, operations) = calculatorParser.ParseExpression(expression);
 
-            numbersToAdd.Add(double.Parse(expressionValues[0]));
-
-            for (int i = 1; i < expressionValues.Count - 1; i += 2)
+            foreach (var priority in priorities)
             {
-                {
-                    double nextNumber = double.Parse(expressionValues[i + 1]);
-                    char operationChar = char.Parse(expressionValues[i]);
-
-                    switch (operationChar)
-                    {
-                        case CharOperations.Multiply:
-                        case CharOperations.Divide:
-                        case CharOperations.Power:
-                            double firstNum = numbersToAdd.Last();
-                            double result = Calculate(firstNum, nextNumber, operationChar);
-                            numbersToAdd[numbersToAdd.Count - 1] = result;
-                            break;
-
-                        case CharOperations.Substruct:
-                            double opposite = Calculate(0, nextNumber, operationChar);
-                            numbersToAdd.Add(opposite);
-                            break;
-
-                        case CharOperations.Add:
-                            numbersToAdd.Add(nextNumber);
-                            break;
-                    }
-                }
+                (numbers, operations) = PerformPriorityCalculation(priority, numbers, operations);
             }
 
-            return ListSum(numbersToAdd);
+            return numbers.First();
         }
 
         public static double Calculate(double firstNum, double secondNum, char operatorChar)
@@ -149,16 +126,46 @@
             }
         }
 
-        private static double ListSum(List<double> list)
+        private static bool IsTopPriority(char operationChar)
         {
-            double sum = 0;
-            
-            foreach (double number in list) 
+            return operationChar == CharOperations.Power;
+        }
+
+        private static bool IsHighPriority(char operationChar)
+        {
+            return operationChar == CharOperations.Multiply || operationChar == CharOperations.Divide;
+        }
+
+        private static bool IsLastPriority(char operationChar)
+        {
+            return operationChar == CharOperations.Add || operationChar == CharOperations.Substruct;
+        }
+
+        private static (List<double>, List<char>) PerformPriorityCalculation(Func<char, bool> isPriority, List<double> numbers, List<char> operations)
+        {
+            List<double> newNumbers = new List<double>();
+            List<char> newOpeations = new List<char>();
+            newNumbers.Add(numbers.First());
+
+            for (int i = 0; i < operations.Count; i++)
             {
-                sum = Calculate(sum, number, CharOperations.Add);
+                double next = numbers[i + 1];
+                char currentOperation = operations[i];
+
+                if (isPriority(currentOperation))
+                {
+                    double firstNum = newNumbers.Last();
+                    double result = Calculate(firstNum, next, currentOperation);
+                    newNumbers[newNumbers.Count - 1] = result;
+                }
+                else
+                {
+                    newNumbers.Add(next);
+                    newOpeations.Add(currentOperation);
+                }
             }
 
-            return sum;
+            return (newNumbers, newOpeations);
         }
     }
 }
