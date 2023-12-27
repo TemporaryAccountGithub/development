@@ -9,45 +9,42 @@
             public const char Multiply = '*';
             public const char Divide = '/';
         }
-        
-        private static readonly char[] ValidOperations = { CharOperations.Add, CharOperations.Multiply, CharOperations.Divide, CharOperations.Substruct };
 
         public static double Calculate(string expression)
         {
-            if (expression == "")
-            {
-                throw new ArgumentException("Empty String!");
-            }
+            List<double> numbersToAdd = new List<double>();
+            List<string> expressionValues = CalculatorParser.ParseExpression(expression);
 
-            expression = expression.Replace("E+", "E");
-            int operatorIndex = -1;
-            double firstNum, secondNum;
-            string firstNumString, secondNumString;
+            numbersToAdd.Add(double.Parse(expressionValues[0]));
 
-            foreach (char operatorChar in ValidOperations)
+            for (int i = 1; i < expressionValues.Count - 1; i += 2)
             {
-                int startIndex = operatorChar == CharOperations.Substruct ? 1 : 0;
-                operatorIndex = expression.IndexOf(operatorChar, startIndex);
-                if (operatorIndex >= 0)
                 {
-                    firstNumString = expression.Substring(0, operatorIndex);
-                    secondNumString = expression.Substring(operatorIndex + 1);
+                    double nextNumber = double.Parse(expressionValues[i + 1]);
+                    char operationChar = char.Parse(expressionValues[i]);
 
-                    if ((operatorIndex == 0) || !double.TryParse(firstNumString, out firstNum) || !double.TryParse(secondNumString, out secondNum))
+                    switch (operationChar)
                     {
-                        throw new ArgumentException("Invalid expression!");
-                    }
+                        case CharOperations.Multiply:
+                        case CharOperations.Divide:
+                            double firstNum = numbersToAdd.Last();
+                            double result = Calculate(firstNum, nextNumber, operationChar);
+                            numbersToAdd[numbersToAdd.Count - 1] = result;
+                            break;
 
-                    if (firstNumString[0] == CharOperations.Add || secondNumString[0] == CharOperations.Add)
-                    {
-                        throw new ArgumentException("Requirements not allow +num as number!");
-                    }
+                        case CharOperations.Substruct:
+                            double opposite = Calculate(0, nextNumber, operationChar);
+                            numbersToAdd.Add(opposite);
+                            break;
 
-                    return Calculate(firstNum, secondNum, operatorChar);
+                        case CharOperations.Add:
+                            numbersToAdd.Add(nextNumber);
+                            break;
+                    }
                 }
             }
 
-            throw new InvalidOperationException("No valid operator in expression");
+            return ListSum(numbersToAdd);
         }
 
         public static double Calculate(double firstNum, double secondNum, char operatorChar)
@@ -59,17 +56,21 @@
                 case CharOperations.Add:
                     result = Add(firstNum, secondNum);
                     break;
+
                 case CharOperations.Multiply:
                     result = Multiply(firstNum, secondNum);
                     break;
+
                 case CharOperations.Substruct:
                     result = Substruct(firstNum, secondNum);
                     break;
+
                 case CharOperations.Divide:
                     result = Divide(firstNum, secondNum);
                     break;
+
                 default:
-                    throw new InvalidOperationException("Invalid operator: " + operatorChar);
+                    throw new ArgumentException("Invalid operator: " + operatorChar);
             }
 
             return result;
@@ -129,6 +130,18 @@
             {
                 throw new OverflowException("Product or division causes double overflow!");
             }
+        }
+
+        private static double ListSum(List<double> list)
+        {
+            double sum = 0;
+            
+            foreach (double number in list) 
+            {
+                sum = Calculate(sum, number, CharOperations.Add);
+            }
+
+            return sum;
         }
     }
 }

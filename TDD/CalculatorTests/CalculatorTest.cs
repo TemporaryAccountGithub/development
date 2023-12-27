@@ -158,7 +158,7 @@ namespace CalculatorTests
         [TestMethod]
         public void given_invalidOperator_when_Calculating_then_throwException()
         {
-            Assert.ThrowsException<InvalidOperationException>(() => Calculator.Calculate(0, 0, '$'));
+            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate(0, 0, '$'));
         }
 
         [TestMethod]
@@ -322,7 +322,7 @@ namespace CalculatorTests
         [TestMethod]
         public void given_invalidOperatorString_when_Calculating_then_throwException()
         {
-            Assert.ThrowsException<InvalidOperationException>(() => Calculator.Calculate("0$0"));
+            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("0$0"));
         }
 
         [TestMethod]
@@ -383,6 +383,38 @@ namespace CalculatorTests
         public void given_MultipleSubOperationOnStartString_when_Calculating_then_throwException()
         {
             Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("--5-3"));
+        }
+
+        [TestMethod]
+        public void given_validLongString_when_Calculate_then_returnResult()
+        {
+            Assert.AreEqual(Calculator.Calculate("2*3+4"), 10);
+        }
+
+        [TestMethod]
+        public void given_validLongStringOrderMatters_when_Calculate_then_returnResult()
+        {
+            Assert.AreEqual(Calculator.Calculate("2+3*4"), 14);
+        }
+
+        [TestMethod]
+        public void given_validLongStringStartsWithNegative_when_Calculate_then_returnResult()
+        {
+            Assert.AreEqual(Calculator.Calculate("-2+3*4"), 10);
+        }
+
+        [TestMethod]
+        public void given_validLongStringAddAndSubOperatorsAndSubAlone_when_Calculate_then_returnResult()
+        {
+            Assert.AreEqual(Calculator.Calculate("2+-3-4"), -5);
+        }
+
+        [TestMethod]
+        public void given_validComplexLongString_when_Calculate_then_returnResult()
+        {
+            double result = -207.5;
+            string expression = "-.5-2.*2*2+-2E+2-3*2--3/2+3*2-.5";
+            Assert.AreEqual(Calculator.Calculate(expression), result);
         }
     }
 }
