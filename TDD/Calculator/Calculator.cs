@@ -33,36 +33,29 @@ namespace CalculatorLibrary
             for (int i = 1; i < matches.Count; i += 2)//seprate to functions and think about var locations
             {
                 {
-                    operations.Add(matches[i].Value[0]);
-                    numbers.Add(double.Parse(matches[i + 1].Value));
-                }
-            }
+                    double nextNumber = double.Parse(matches[i + 1].Value);
+                    char operationChar = matches[i].Value[0];
 
-            List<double> numbersLowPriority = new List<double>();
-            numbersLowPriority.Add(numbers.First());
-
-            for (int i = 0; i < operations.Count; i++)//do this in prev for?
-            {
-                if (IsHighPriorityOperation(operations[i]))
-                {
-                    double result = Calculate(numbersLowPriority.Last(), numbers[i + 1], operations[i]);
-                    numbersLowPriority[numbersLowPriority.Count - 1] = (result);
-                }
-                else
-                {
-                    if (operations[i] == CharOperations.Add)
+                    switch (operationChar)
                     {
-                        numbersLowPriority.Add(numbers[i + 1]);
-                    }
-                    else //if substruct?
-                    {
-                        double opposite = Calculate(0, numbers[i + 1], CharOperations.Substruct);
-                        numbersLowPriority.Add(opposite);
+                        case CharOperations.Multiply:
+                        case CharOperations.Divide:
+                            double firstNum = numbers.Last();
+                            double result = Calculate(firstNum, nextNumber, operationChar);
+                            numbers[numbers.Count - 1] = result;
+                            break;
+                        case CharOperations.Substruct:
+                            double opposite = Calculate(0, nextNumber, operationChar);
+                            numbers.Add(opposite);
+                            break;
+                        case CharOperations.Add:
+                            numbers.Add(nextNumber);
+                            break;
                     }
                 }
             }
 
-            return ListSum(numbersLowPriority);
+            return ListSum(numbers);
         }
 
         public static double Calculate(double firstNum, double secondNum, char operatorChar)
