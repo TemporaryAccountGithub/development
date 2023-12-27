@@ -412,8 +412,8 @@ namespace CalculatorTests
         [TestMethod]
         public void given_validComplexLongString_when_Calculate_then_returnResult()
         {
-            double result = -9.5;
-            string expression = "-.5-2.*2*2+-2-3*2--3/2+3*2-.5";
+            double result = -207.5;
+            string expression = "-.5-2.*2*2+-2E+2-3*2--3/2+3*2-.5";
             Assert.AreEqual(Calculator.Calculate(expression), result);
         }
     }
