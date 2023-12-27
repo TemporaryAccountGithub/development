@@ -19,18 +19,15 @@ namespace CalculatorLibrary
         public static double Calculate(string expression)
         {
             List<double> numbersToAdd = new List<double>();
+            List<string> expressionValues = CalculatorParser.ParseExpression(expression);
 
-            expression = expression.Replace("E+", "E");
-            ValidateRegexExpression(expression);
+            numbersToAdd.Add(double.Parse(expressionValues[0]));
 
-            MatchCollection matches = Regex.Matches(expression, MatchPattern);
-            numbersToAdd.Add(double.Parse(matches[0].Value));
-
-            for (int i = 1; i < matches.Count - 1; i += 2)
+            for (int i = 1; i < expressionValues.Count - 1; i += 2)
             {
                 {
-                    double nextNumber = double.Parse(matches[i + 1].Value);
-                    char operationChar = matches[i].Value[0];
+                    double nextNumber = double.Parse(expressionValues[i + 1]);
+                    char operationChar = char.Parse(expressionValues[i]);
 
                     switch (operationChar)
                     {
