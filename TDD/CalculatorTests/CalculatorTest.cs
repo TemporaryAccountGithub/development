@@ -445,5 +445,11 @@ namespace CalculatorTests
         {
             Assert.AreEqual(Calculator.Calculate("2^3"), 8);
         }
+
+        [TestMethod]
+        public void given_stringWithPowerOrderMatters_when_Calculate_then_returnResult()
+        {
+            Assert.AreEqual(Calculator.Calculate("2*2^3"), 16);
+        }
     }
 }
