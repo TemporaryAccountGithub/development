@@ -410,6 +410,14 @@ namespace CalculatorTests
         }
 
         [TestMethod]
+        public void given_validLongStringAddAndSubOperatorsAndSubAlone_when_Calculate_then_returnResult()
+        {
+            string expression = "2+-3-4";
+            double result = -5;
+            Assert.AreEqual(Calculator.Calculate(expression), result);
+        }
+
+        [TestMethod]
         public void test()
         {
             double result = -14.5;
