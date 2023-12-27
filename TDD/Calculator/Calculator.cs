@@ -26,7 +26,7 @@ namespace CalculatorLibrary
             MatchCollection matches = Regex.Matches(expression, MatchPattern);
             numbersToAdd.Add(double.Parse(matches[0].Value));
 
-            for (int i = 1; i < matches.Count; i += 2)
+            for (int i = 1; i < matches.Count - 1; i += 2)
             {
                 {
                     double nextNumber = double.Parse(matches[i + 1].Value);
