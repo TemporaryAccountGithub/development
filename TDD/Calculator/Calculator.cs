@@ -15,61 +15,54 @@ namespace CalculatorLibrary
 
         public static double Calculate(string expression)
         {
-            if (expression == "")
-            {
-                throw new ArgumentException("Empty String!");
-            }
-
             expression = expression.Replace("E+", "E");
 
             List<double> numbers = new List<double>();
             List<char> operations = new List<char>();
-            const string ValidPattern = @"^(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?([-+*/](-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?))*)$";
+            const string ValidPattern = @"^(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?([-+*/](-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?))+)$";
             const string MatchPattern = @"((?<=(\d|\.))[+\-*/])|(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
 
-            if (Regex.IsMatch(expression, ValidPattern))//change to not -> throw
-            {
-                MatchCollection matches = Regex.Matches(expression, MatchPattern);
-                numbers.Add(double.Parse(matches[0].Value));
-
-                for (int i = 1; i < matches.Count; i += 2)//seprate to functions and think about var locations
-                {
-                    {
-                        operations.Add(matches[i].Value[0]);
-                        numbers.Add(double.Parse(matches[i + 1].Value));
-                    }
-                }
-
-                List<double> numbersLowPriority = new List<double>();
-                numbersLowPriority.Add(numbers.First());
-
-                for (int i = 0; i < operations.Count; i++)//do this in prev for?
-                {
-                    if (IsHighPriorityOperation(operations[i]))
-                    {
-                        double result = Calculate(numbersLowPriority.Last(), numbers[i + 1], operations[i]);
-                        numbersLowPriority[numbersLowPriority.Count - 1] = (result);
-                    }
-                    else
-                    {
-                        if (operations[i] == CharOperations.Add)
-                        {
-                            numbersLowPriority.Add(numbers[i + 1]);
-                        }
-                        else //if substruct?
-                        {
-                            double opposite = Calculate(0, numbers[i+1], CharOperations.Substruct);
-                            numbersLowPriority.Add(opposite);
-                        }
-                    }
-                }
-
-                return ListSum(numbersLowPriority);
-            }
-            else
+            if (!Regex.IsMatch(expression, ValidPattern))
             {
                 throw new ArgumentException("Invalid expression!");
             }
+
+            MatchCollection matches = Regex.Matches(expression, MatchPattern);
+            numbers.Add(double.Parse(matches[0].Value));
+
+            for (int i = 1; i < matches.Count; i += 2)//seprate to functions and think about var locations
+            {
+                {
+                    operations.Add(matches[i].Value[0]);
+                    numbers.Add(double.Parse(matches[i + 1].Value));
+                }
+            }
+
+            List<double> numbersLowPriority = new List<double>();
+            numbersLowPriority.Add(numbers.First());
+
+            for (int i = 0; i < operations.Count; i++)//do this in prev for?
+            {
+                if (IsHighPriorityOperation(operations[i]))
+                {
+                    double result = Calculate(numbersLowPriority.Last(), numbers[i + 1], operations[i]);
+                    numbersLowPriority[numbersLowPriority.Count - 1] = (result);
+                }
+                else
+                {
+                    if (operations[i] == CharOperations.Add)
+                    {
+                        numbersLowPriority.Add(numbers[i + 1]);
+                    }
+                    else //if substruct?
+                    {
+                        double opposite = Calculate(0, numbers[i + 1], CharOperations.Substruct);
+                        numbersLowPriority.Add(opposite);
+                    }
+                }
+            }
+
+            return ListSum(numbersLowPriority);
         }
 
         public static double Calculate(double firstNum, double secondNum, char operatorChar)
