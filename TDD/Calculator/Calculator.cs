@@ -13,24 +13,20 @@ namespace CalculatorLibrary
             public const char Divide = '/';
         }
 
+        const string ValidPattern = @"^(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?([-+*/](-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?))+)$";
+        const string MatchPattern = @"((?<=(\d|\.))[+\-*/])|(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
+
         public static double Calculate(string expression)
         {
+            List<double> numbersToAdd = new List<double>();
+
             expression = expression.Replace("E+", "E");
-
-            List<double> numbers = new List<double>();
-            List<char> operations = new List<char>();
-            const string ValidPattern = @"^(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?([-+*/](-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?))+)$";
-            const string MatchPattern = @"((?<=(\d|\.))[+\-*/])|(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
-
-            if (!Regex.IsMatch(expression, ValidPattern))
-            {
-                throw new ArgumentException("Invalid expression!");
-            }
+            ValidateRegexExpression(expression);
 
             MatchCollection matches = Regex.Matches(expression, MatchPattern);
-            numbers.Add(double.Parse(matches[0].Value));
+            numbersToAdd.Add(double.Parse(matches[0].Value));
 
-            for (int i = 1; i < matches.Count; i += 2)//seprate to functions and think about var locations
+            for (int i = 1; i < matches.Count; i += 2)
             {
                 {
                     double nextNumber = double.Parse(matches[i + 1].Value);
@@ -40,22 +36,22 @@ namespace CalculatorLibrary
                     {
                         case CharOperations.Multiply:
                         case CharOperations.Divide:
-                            double firstNum = numbers.Last();
+                            double firstNum = numbersToAdd.Last();
                             double result = Calculate(firstNum, nextNumber, operationChar);
-                            numbers[numbers.Count - 1] = result;
+                            numbersToAdd[numbersToAdd.Count - 1] = result;
                             break;
                         case CharOperations.Substruct:
                             double opposite = Calculate(0, nextNumber, operationChar);
-                            numbers.Add(opposite);
+                            numbersToAdd.Add(opposite);
                             break;
                         case CharOperations.Add:
-                            numbers.Add(nextNumber);
+                            numbersToAdd.Add(nextNumber);
                             break;
                     }
                 }
             }
 
-            return ListSum(numbers);
+            return ListSum(numbersToAdd);
         }
 
         public static double Calculate(double firstNum, double secondNum, char operatorChar)
@@ -139,9 +135,12 @@ namespace CalculatorLibrary
             }
         }
 
-        private static bool IsHighPriorityOperation(char operationChar) 
+        private static void ValidateRegexExpression(string expression)
         {
-            return operationChar == CharOperations.Multiply || operationChar == CharOperations.Divide;
+            if (!Regex.IsMatch(expression, ValidPattern))
+            {
+                throw new ArgumentException("Invalid expression!");
+            }
         }
 
         private static double ListSum(List<double> list)
