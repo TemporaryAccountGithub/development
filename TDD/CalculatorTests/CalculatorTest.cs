@@ -433,5 +433,17 @@ namespace CalculatorTests
 
             Calculator.SetCalculatorParser(new CalculatorParser());
         }
+
+        [TestMethod]
+        public void given_powerOperator_when_Calculate_then_returnResult()
+        {
+            Assert.AreEqual(Calculator.Calculate(2, 3, '^'), 8);
+        }
+
+        [TestMethod]
+        public void given_stringWithPower_when_Calculate_then_returnResult()
+        {
+            Assert.AreEqual(Calculator.Calculate("2^3"), 8);
+        }
     }
 }
