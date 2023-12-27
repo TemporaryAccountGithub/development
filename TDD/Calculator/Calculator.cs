@@ -34,6 +34,7 @@
                     {
                         case CharOperations.Multiply:
                         case CharOperations.Divide:
+                        case CharOperations.Power:
                             double firstNum = numbersToAdd.Last();
                             double result = Calculate(firstNum, nextNumber, operationChar);
                             numbersToAdd[numbersToAdd.Count - 1] = result;
