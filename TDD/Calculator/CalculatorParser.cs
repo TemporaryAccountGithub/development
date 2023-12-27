@@ -4,8 +4,8 @@ namespace CalculatorLibrary
 {
     public class CalculatorParser : ICalculatorParser
     {
-        private const string ValidPattern = @"^(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?([-+*/](-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?))+)$";
-        private const string MatchPattern = @"((?<=(\d|\.))[+\-*/])|(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
+        private const string ValidPattern = @"^(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?([-+*/^](-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?))+)$";
+        private const string MatchPattern = @"((?<=(\d|\.))[+\-*/^])|(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
 
         public List<string> ParseExpression(string expression)
         {

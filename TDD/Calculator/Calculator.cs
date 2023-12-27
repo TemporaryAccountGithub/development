@@ -9,6 +9,7 @@
             public const char Substruct = '-';
             public const char Multiply = '*';
             public const char Divide = '/';
+            public const char Power = '^';
         }
 
         public static void SetCalculatorParser(ICalculatorParser parser)
@@ -75,6 +76,10 @@
                     result = Divide(firstNum, secondNum);
                     break;
 
+                case CharOperations.Power:
+                    result = Power(firstNum, secondNum);
+                    break;
+
                 default:
                     throw new ArgumentException("Invalid operator: " + operatorChar);
             }
@@ -115,6 +120,11 @@
             DoubleInfinityCheck(quotient);
 
             return quotient;
+        }
+
+        private static double Power(double firstNum, double secondNum) 
+        {
+            return Math.Pow(firstNum, secondNum);
         }
 
         private static void DoubleOverflowSumCheck(double firstNum, double secondNum)
