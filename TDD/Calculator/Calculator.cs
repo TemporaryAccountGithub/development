@@ -120,7 +120,10 @@
 
         private static double Power(double firstNum, double secondNum) 
         {
-            return Math.Pow(firstNum, secondNum);
+            double result = Math.Pow(firstNum, secondNum);
+            DoubleInfinityCheck(result);
+
+            return result;
         }
 
         private static double Root(double number)

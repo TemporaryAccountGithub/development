@@ -419,6 +419,12 @@ namespace CalculatorTests
         }
 
         [TestMethod]
+        public void given_stringWithOneNumber_when_Calculate_then_returnNumber()
+        {
+            Assert.AreEqual(Calculator.Calculate("234"), 234);
+        }
+
+        [TestMethod]
         public void given_validComplexLongString_when_CalculateWithMock_then_returnResult()
         {
             var mockParser = new Mock<ICalculatorParser>();
@@ -447,15 +453,21 @@ namespace CalculatorTests
         }
 
         [TestMethod]
-        public void given_stringWithPowerOrderMatters_when_Calculate_then_returnResult()
+        public void given_stringWithPowerOverflow_when_Calculate_then_throwException()
         {
-            Assert.AreEqual(Calculator.Calculate("2*2^3"), 16);
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate("20^300"));
         }
 
         [TestMethod]
-        public void given_stringWithOneNumber_when_Calculate_then_returnNumber()
+        public void given_stringWithPowerUnderflow_when_Calculate_then_throwException()
         {
-            Assert.AreEqual(Calculator.Calculate("234"), 234);
+            Assert.ThrowsException<OverflowException>(() => Calculator.Calculate("-20^301"));
+        }
+
+        [TestMethod]
+        public void given_stringWithPowerOrderMatters_when_Calculate_then_returnResult()
+        {
+            Assert.AreEqual(Calculator.Calculate("2*2^3"), 16);
         }
 
         [TestMethod]
