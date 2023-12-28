@@ -5,8 +5,7 @@ namespace CalculatorLibrary
     public class CalculatorParser : ICalculatorParser
     {
         private const string ValidPattern = @"^((\()*[-&]?(\d+(\.\d*)?|(\.\d+))([Ee][+]?\d+)?(\))*([-+*/^]((\()*[-&]?&?(\d+(\.\d*)?|(\.\d+))([Ee][+]?\d+)?(\))*))*)$";
-        private const string MatchPattern = @"((?<=(\d|\.))[+\-*/^])|([-&]?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
-        private const string bracketsPattern = @"\(((?>[^()]+|\((?<DEPTH>)|\)(?<-DEPTH>))*)(?(DEPTH)(?!))\)|((?<=(\d|\.|\)))[+\-*/^])|([-&]?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
+        private const string MatchPattern = @"\(((?>[^()]+|\((?<DEPTH>)|\)(?<-DEPTH>))*)(?(DEPTH)(?!))\)|((?<=(\d|\.|\)))[+\-*/^])|([-&]?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
         private const char UnaryOperation = '&';
 
         public void ValidateExpression(string expression)
@@ -15,42 +14,14 @@ namespace CalculatorLibrary
             ValidateBrackets(expression);
         }
 
-        public bool IsBracketsExpression(string expression) 
+        public bool IsBracketsExpression(string expression)
         {
             return expression.Contains("(");
         }
 
-        public (List<string>, List<char>) ParseBracketsExpression(string expression) 
-        {
-            List<string> expressions = new List<string>();
-            List<char> operations = new List<char>();
-
-            MatchCollection matches = Regex.Matches(expression, MatchPattern);
-            for (int i = 0; i < matches.Count; i++)
-            {
-                string current = matches[i].Value;
-
-                if (i % 2 == 1)
-                {
-                    operations.Add(char.Parse(current));
-                }
-                else
-                {
-                    if (BracketsExpression(current))
-                    {
-                        current = current.Substring(1, current.Length - 2);
-                    }
-
-                    expressions.Add(current);
-                }
-            }
-
-            return (expressions, operations);
-        }
-
         public (List<string>, List<char>) ParseExpression(string expression)
         {
-            List<string> numbers = new List<string>();
+            List<string> expressions = new List<string>();
             List<char> operations = new List<char>();
 
             expression = expression.Replace("E+", "E");
@@ -68,16 +39,20 @@ namespace CalculatorLibrary
                 {
                     if (StartWithUnaryOperation(current))
                     {
-                        numbers.Add("0");
+                        expressions.Add("0");
                         operations.Add(current[0]);
                         current = current.Substring(1);
                     }
-                    
-                    numbers.Add(current);
+                    else if (BracketsExpression(current))
+                    {
+                        current = current.Substring(1, current.Length - 2);
+                    }
+
+                    expressions.Add(current);
                 }
             }
 
-            return (numbers, operations);
+            return (expressions, operations);
         }
 
         private void ValidateRegexExpression(string expression)
@@ -91,15 +66,15 @@ namespace CalculatorLibrary
         private void ValidateBrackets(string expression)
         {
             int openBrackets = 0;
-            foreach (char c in expression) 
+            foreach (char c in expression)
             {
-                if (c == '(') 
+                if (c == '(')
                 {
                     openBrackets++;
                 }
                 else
                 {
-                    if (c == ')') 
+                    if (c == ')')
                     {
                         openBrackets--;
                         if (openBrackets < 0)
