@@ -8,6 +8,9 @@ namespace CalculatorLibrary
 {
     public interface ICalculatorParser
     {
-        (List<double>, List<char>) ParseExpression(string expression);
+        void ValidateExpression (string expression);
+        bool IsBracketsExpression(string expression);
+        List<string> ParseBracketsExpression(string expression);
+        (List<double>, List<char>) ParseBaseExpression(string expression);
     }
 }

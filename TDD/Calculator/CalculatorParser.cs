@@ -8,7 +8,22 @@ namespace CalculatorLibrary
         private const string MatchPattern = @"((?<=(\d|\.))[+\-*/^])|([-&]?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
         private const char UnaryOperation = '&';
 
-        public (List<double>, List<char>) ParseExpression(string expression)
+        public void ValidateExpression(string expression)
+        {
+
+        }
+
+        public bool IsBracketsExpression(string expression) 
+        {
+            return true;
+        }
+
+        public List<string> ParseBracketsExpression(string expression) 
+        {
+            return new List<string>();
+        }
+
+        public (List<double>, List<char>) ParseBaseExpression(string expression)
         {
             List<double> numbers = new List<double>();
             List<char> operations = new List<char>();
