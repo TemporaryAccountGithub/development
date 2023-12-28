@@ -83,18 +83,6 @@ namespace CalculatorTests
         }
 
         [TestMethod]
-        public void given_bracketsWithNumber_when_isBracketsString_then_returnTrue()
-        {
-            Assert.IsTrue(parser.IsBracketsExpression("(123)"));
-        }
-
-        [TestMethod]
-        public void given_numberString_when_isBracketsString_then_returnFalse()
-        {
-            Assert.IsFalse(parser.IsBracketsExpression("123"));
-        }
-
-        [TestMethod]
         public void given_bracketsWithNumber_when_validate_then_doNothing()
         {
             parser.ValidateExpression("(123E2)");

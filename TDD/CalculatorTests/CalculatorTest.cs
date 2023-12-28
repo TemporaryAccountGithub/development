@@ -499,5 +499,14 @@ namespace CalculatorTests
         {
             Assert.AreEqual(Calculator.Calculate("(1+2)"), 3);
         }
+
+        [TestMethod]
+        public void given_longInnerBracketsExpression_when_Calculate_then_returnResult()
+        {
+            string expression = "(1+(3*2)-2+3)+2+(3)*4-3/2+4*(2+3*4)";
+            double result = 14*4+22-1.5;
+
+            Assert.AreEqual(Calculator.Calculate(expression), result);
+        }
     }
 }

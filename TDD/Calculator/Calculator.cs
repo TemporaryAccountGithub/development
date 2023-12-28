@@ -20,6 +20,7 @@
 
         public static double Calculate(string expression)
         {
+            calculatorParser.ValidateExpression(expression);
             return CalculateRecursive(expression);
         }
 
@@ -58,17 +59,22 @@
 
         private static double CalculateRecursive(string expression)
         {
-            return CalculateString(expression);
-        }
-
-        private static double CalculateString(string expression) 
-        {
             List<Func<char, bool>> priorities = new List<Func<char, bool>> { IsTopPriority, IsHighPriority, IsLastPriority };
-            List<string> numbersStrings;
+            List<string> expressions;
             List<char> operations;
-            calculatorParser.ValidateExpression(expression);
-            (numbersStrings, operations) = calculatorParser.ParseExpression(expression);
-            List<double> numbers = numbersStrings.Select(double.Parse).ToList();
+            List<double> numbers = new List<double>();
+            double number;
+            (expressions, operations) = calculatorParser.ParseExpression(expression);
+
+            foreach (string rawExpression in expressions)
+            {
+                if (!double.TryParse(rawExpression, out number))
+                {
+                    number = CalculateRecursive(rawExpression);
+                }
+
+                numbers.Add(number);
+            }
 
             foreach (var priority in priorities)
             {
@@ -78,19 +84,46 @@
             return numbers.First();
         }
 
+        private static (List<double>, List<char>) PerformPriorityCalculation(Func<char, bool> isPriority, List<double> numbers, List<char> operations)
+        {
+            List<double> newNumbers = new List<double>();
+            List<char> newOpeations = new List<char>();
+            newNumbers.Add(numbers.First());
+
+            for (int i = 0; i < operations.Count; i++)
+            {
+                double next = numbers[i + 1];
+                char currentOperation = operations[i];
+
+                if (isPriority(currentOperation))
+                {
+                    double firstNum = newNumbers.Last();
+                    double result = InternalCalculate(firstNum, next, currentOperation);
+                    newNumbers[newNumbers.Count - 1] = result;
+                }
+                else
+                {
+                    newNumbers.Add(next);
+                    newOpeations.Add(currentOperation);
+                }
+            }
+
+            return (newNumbers, newOpeations);
+        }
+
         private static double InternalCalculate(double firstNum, double secondNum, char operatorChar)
         {
-            if (IsUnaryOperation(operatorChar)) 
+            if (IsUnaryOperation(operatorChar))
             {
                 return HandleUnaryOperation(secondNum, operatorChar);
             }
-            else 
+            else
             {
                 return Calculate(firstNum, secondNum, operatorChar);
             }
         }
 
-        private static double HandleUnaryOperation(double number, char operatorChar) 
+        private static double HandleUnaryOperation(double number, char operatorChar)
         {
             return Root(number);
         }
@@ -130,7 +163,7 @@
             return quotient;
         }
 
-        private static double Power(double firstNum, double secondNum) 
+        private static double Power(double firstNum, double secondNum)
         {
             double result = Math.Pow(firstNum, secondNum);
             DoubleInfinityCheck(result);
@@ -185,36 +218,9 @@
             return operationChar == CharOperations.Add || operationChar == CharOperations.Substruct;
         }
 
-        private static bool IsUnaryOperation(char operationChar) 
+        private static bool IsUnaryOperation(char operationChar)
         {
             return operationChar == CharOperations.Root;
-        }
-
-        private static (List<double>, List<char>) PerformPriorityCalculation(Func<char, bool> isPriority, List<double> numbers, List<char> operations)
-        {
-            List<double> newNumbers = new List<double>();
-            List<char> newOpeations = new List<char>();
-            newNumbers.Add(numbers.First());
-
-            for (int i = 0; i < operations.Count; i++)
-            {
-                double next = numbers[i + 1];
-                char currentOperation = operations[i];
-
-                if (isPriority(currentOperation))
-                {
-                    double firstNum = newNumbers.Last();
-                    double result = InternalCalculate(firstNum, next, currentOperation);
-                    newNumbers[newNumbers.Count - 1] = result;
-                }
-                else
-                {
-                    newNumbers.Add(next);
-                    newOpeations.Add(currentOperation);
-                }
-            }
-
-            return (newNumbers, newOpeations);
         }
     }
 }
