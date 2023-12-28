@@ -56,5 +56,24 @@ namespace CalculatorTests
             CollectionAssert.AreEqual(result.Item1, expectedNumbers);
             CollectionAssert.AreEqual(result.Item2, expectedOperations);
         }
+
+        [TestMethod]
+        public void given_invalidStringWithSqrt_when_parse_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ParseExpression("123&123"));
+        }
+
+        [TestMethod]
+        public void given_longStringWithSqrt_when_parse_then_returnLists()
+        {
+            expression = "2+&5";
+            expectedNumbers = new List<double> { 2, 0, 5 };
+            expectedOperations = new List<char> { '+', '&' };
+
+            var result = parser.ParseExpression(expression);
+
+            CollectionAssert.AreEqual(result.Item1, expectedNumbers);
+            CollectionAssert.AreEqual(result.Item2, expectedOperations);
+        }
     }
 }
