@@ -10,6 +10,7 @@
             public const char Multiply = '*';
             public const char Divide = '/';
             public const char Power = '^';
+            public const char Root = '&';
         }
 
         public static void SetCalculatorParser(ICalculatorParser parser)
@@ -65,6 +66,23 @@
             return result;
         }
 
+        private static double InternalCalculate(double firstNum, double secondNum, char operatorChar)
+        {
+            if (IsUnaryOperation(operatorChar)) 
+            {
+                return HandleUnaryOperation(secondNum, operatorChar);
+            }
+            else 
+            {
+                return Calculate(firstNum, secondNum, operatorChar);
+            }
+        }
+
+        private static double HandleUnaryOperation(double number, char operatorChar) 
+        {
+            return Root(number);
+        }
+
         private static double Add(double firstNum, double secondNum)
         {
             DoubleOverflowSumCheck(firstNum, secondNum);
@@ -105,6 +123,11 @@
             return Math.Pow(firstNum, secondNum);
         }
 
+        private static double Root(double number)
+        {
+            return Math.Sqrt(number);
+        }
+
         private static void DoubleOverflowSumCheck(double firstNum, double secondNum)
         {
             if ((firstNum > 0) && (secondNum > double.MaxValue - firstNum))
@@ -128,7 +151,7 @@
 
         private static bool IsTopPriority(char operationChar)
         {
-            return operationChar == CharOperations.Power;
+            return operationChar == CharOperations.Power || operationChar == CharOperations.Root;
         }
 
         private static bool IsHighPriority(char operationChar)
@@ -139,6 +162,11 @@
         private static bool IsLastPriority(char operationChar)
         {
             return operationChar == CharOperations.Add || operationChar == CharOperations.Substruct;
+        }
+
+        private static bool IsUnaryOperation(char operationChar) 
+        {
+            return operationChar == CharOperations.Root;
         }
 
         private static (List<double>, List<char>) PerformPriorityCalculation(Func<char, bool> isPriority, List<double> numbers, List<char> operations)
@@ -155,7 +183,7 @@
                 if (isPriority(currentOperation))
                 {
                     double firstNum = newNumbers.Last();
-                    double result = Calculate(firstNum, next, currentOperation);
+                    double result = InternalCalculate(firstNum, next, currentOperation);
                     newNumbers[newNumbers.Count - 1] = result;
                 }
                 else

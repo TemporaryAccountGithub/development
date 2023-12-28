@@ -458,10 +458,10 @@ namespace CalculatorTests
             Assert.AreEqual(Calculator.Calculate("234"), 234);
         }
 
-        //[TestMethod]
-        //public void given_rootNumberString_when_Calculate_then_returnResult()
-        //{
-        //    Assert.AreEqual(Calculator.Calculate("&4"), 2);
-        //}
+        [TestMethod]
+        public void given_rootNumberString_when_Calculate_then_returnResult()
+        {
+            Assert.AreEqual(Calculator.Calculate("&4"), 2);
+        }
     }
 }
