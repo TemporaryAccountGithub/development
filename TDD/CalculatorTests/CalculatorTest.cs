@@ -487,5 +487,17 @@ namespace CalculatorTests
         {
             Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("&-5"));
         }
+
+        [TestMethod]
+        public void given_bracketsWithNumber_when_Calculate_then_returnNumber()
+        {
+            Assert.AreEqual(Calculator.Calculate("(-123)"), -123);
+        }
+
+        [TestMethod]
+        public void given_bracketsWithSimpleExpression_when_Calculate_then_returnResult()
+        {
+            Assert.AreEqual(Calculator.Calculate("(1+2)"), 3);
+        }
     }
 }

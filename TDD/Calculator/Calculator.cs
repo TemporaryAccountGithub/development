@@ -20,19 +20,7 @@
 
         public static double Calculate(string expression)
         {
-            List<Func<char, bool>> priorities = new List<Func<char, bool>> { IsTopPriority, IsHighPriority, IsLastPriority };
-            List<string> numbersStrings;
-            List<char> operations;
-            calculatorParser.ValidateExpression(expression);
-            (numbersStrings, operations) = calculatorParser.ParseExpression(expression);
-            List<double> numbers = numbersStrings.Select(double.Parse).ToList();
-
-            foreach (var priority in priorities)
-            {
-                (numbers, operations) = PerformPriorityCalculation(priority, numbers, operations);
-            }
-
-            return numbers.First();
+            return CalculateRecursive(expression);
         }
 
         public static double Calculate(double firstNum, double secondNum, char operatorChar)
@@ -66,6 +54,28 @@
             }
 
             return result;
+        }
+
+        private static double CalculateRecursive(string expression)
+        {
+            return CalculateString(expression);
+        }
+
+        private static double CalculateString(string expression) 
+        {
+            List<Func<char, bool>> priorities = new List<Func<char, bool>> { IsTopPriority, IsHighPriority, IsLastPriority };
+            List<string> numbersStrings;
+            List<char> operations;
+            calculatorParser.ValidateExpression(expression);
+            (numbersStrings, operations) = calculatorParser.ParseExpression(expression);
+            List<double> numbers = numbersStrings.Select(double.Parse).ToList();
+
+            foreach (var priority in priorities)
+            {
+                (numbers, operations) = PerformPriorityCalculation(priority, numbers, operations);
+            }
+
+            return numbers.First();
         }
 
         private static double InternalCalculate(double firstNum, double secondNum, char operatorChar)
