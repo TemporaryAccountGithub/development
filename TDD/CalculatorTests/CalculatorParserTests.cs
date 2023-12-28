@@ -19,6 +19,12 @@ namespace CalculatorTests
         }
 
         [TestMethod]
+        public void given_validString_when_Validate_then_doesNothig()
+        {
+            parser.ValidateExpression("1+2");
+        }
+
+        [TestMethod]
         public void given_string_when_parse_then_returnLists()
         {
             expression = "1+2";
@@ -58,9 +64,9 @@ namespace CalculatorTests
         }
 
         [TestMethod]
-        public void given_invalidStringWithSqrt_when_parse_then_throwException()
+        public void given_invalidStringWithSqrt_when_ValidateExpression_then_throwException()
         {
-            Assert.ThrowsException<ArgumentException>(() => parser.ParseBaseExpression("123&123"));
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("123&123"));
         }
 
         [TestMethod]
@@ -74,6 +80,54 @@ namespace CalculatorTests
 
             CollectionAssert.AreEqual(result.Item1, expectedNumbers);
             CollectionAssert.AreEqual(result.Item2, expectedOperations);
+        }
+
+        [TestMethod]
+        public void given_bracketsWithNumber_when_isBracketsString_then_returnTrue()
+        {
+            Assert.IsTrue(parser.IsBracketsExpression("(123)"));
+        }
+
+        [TestMethod]
+        public void given_numberString_when_isBracketsString_then_returnFalse()
+        {
+            Assert.IsFalse(parser.IsBracketsExpression("123"));
+        }
+
+        [TestMethod]
+        public void given_bracketsWithNumber_when_validate_then_doNothing()
+        {
+            parser.ValidateExpression("(123E2)");
+        }
+
+        [TestMethod]
+        public void given_bracketsWithoutCloser_when_validate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("(123"));
+        }
+
+        [TestMethod]
+        public void given_bracketsWrongOrder_when_validate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression(")123("));
+        }
+
+        [TestMethod]
+        public void given_bracketsEmpty_when_validate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("()"));
+        }
+
+        [TestMethod]
+        public void given_bracketsNearOperation_when_validate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("(*12)"));
+        }
+
+        [TestMethod]
+        public void given_bracketsNestedValid_when_validate_then_doNothing()
+        {
+            parser.ValidateExpression("(123)+6*(12+(23-4))");
         }
     }
 }

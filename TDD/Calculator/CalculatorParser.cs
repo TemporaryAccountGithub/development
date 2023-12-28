@@ -4,18 +4,19 @@ namespace CalculatorLibrary
 {
     public class CalculatorParser : ICalculatorParser
     {
-        private const string ValidPattern = @"^([-&]?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?([-+*/^]([-&]?&?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?))*)$";
+        private const string ValidPattern = @"^((\()*[-&]?(\d+(\.\d*)?|(\.\d+))([Ee][+]?\d+)?(\))*([-+*/^]((\()*[-&]?&?(\d+(\.\d*)?|(\.\d+))([Ee][+]?\d+)?(\))*))*)$";
         private const string MatchPattern = @"((?<=(\d|\.))[+\-*/^])|([-&]?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
         private const char UnaryOperation = '&';
 
         public void ValidateExpression(string expression)
         {
-
+            ValidateRegexExpression(expression);
+            ValidateBrackets(expression);
         }
 
         public bool IsBracketsExpression(string expression) 
         {
-            return true;
+            return expression.Contains("(");
         }
 
         public List<string> ParseBracketsExpression(string expression) 
@@ -60,13 +61,46 @@ namespace CalculatorLibrary
         {
             if (!Regex.IsMatch(expression, ValidPattern))
             {
-                throw new ArgumentException("Invalid expression!");
+                ValidateFail();
+            }
+        }
+
+        private void ValidateBrackets(string expression)
+        {
+            int openBrackets = 0;
+            foreach (char c in expression) 
+            {
+                if (c == '(') 
+                {
+                    openBrackets++;
+                }
+                else
+                {
+                    if (c == ')') 
+                    {
+                        openBrackets--;
+                        if (openBrackets < 0)
+                        {
+                            ValidateFail();
+                        }
+                    }
+                }
+            }
+
+            if (openBrackets != 0)
+            {
+                ValidateFail();
             }
         }
 
         private bool StartWithUnaryOperation(string number)
         {
             return number[0] == UnaryOperation;
+        }
+
+        private void ValidateFail()
+        {
+            throw new ArgumentException("Invalid expression!");
         }
     }
 }
