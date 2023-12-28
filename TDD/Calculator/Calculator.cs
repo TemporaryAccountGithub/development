@@ -60,13 +60,12 @@
         private static double CalculateRecursive(string expression)
         {
             List<double> numbers = new List<double>();
-            List<string> expressions;
-            List<char> operations;
+            CalculationState<string> state;
             double number;
 
-            (expressions, operations) = calculatorParser.ParseExpression(expression);
+            state = calculatorParser.ParseExpression(expression);
 
-            foreach (string rawExpression in expressions)
+            foreach (string rawExpression in state.Expressions)
             {
                 if (!double.TryParse(rawExpression, out number))
                 {
@@ -76,31 +75,31 @@
                 numbers.Add(number);
             }
 
-            return CalculateFromLists(numbers, operations);
+            return CalculateFromLists(new CalculationState<double>(numbers, state.Operations));
         }
 
-        private static double CalculateFromLists(List<double> numbers, List<char> operations)
+        private static double CalculateFromLists(CalculationState<double> state)
         {
             List<Func<char, bool>> priorities = new List<Func<char, bool>> { IsTopPriority, IsHighPriority, IsLastPriority };
 
             foreach (var priority in priorities)
             {
-                (numbers, operations) = PerformPriorityCalculation(priority, numbers, operations);
+                state = PerformPriorityCalculation(priority, state);
             }
 
-            return numbers.First();
+            return state.Expressions.First();
         }
 
-        private static (List<double>, List<char>) PerformPriorityCalculation(Func<char, bool> isPriority, List<double> numbers, List<char> operations)
+        private static CalculationState<double> PerformPriorityCalculation(Func<char, bool> isPriority, CalculationState<double> state)
         {
             List<double> newNumbers = new List<double>();
             List<char> newOpeations = new List<char>();
-            newNumbers.Add(numbers.First());
+            newNumbers.Add(state.Expressions.First());
 
-            for (int i = 0; i < operations.Count; i++)
+            for (int i = 0; i < state.Operations.Count; i++)
             {
-                double next = numbers[i + 1];
-                char currentOperation = operations[i];
+                double next = state.Expressions[i + 1];
+                char currentOperation = state.Operations[i];
 
                 if (isPriority(currentOperation))
                 {
@@ -115,7 +114,7 @@
                 }
             }
 
-            return (newNumbers, newOpeations);
+            return new CalculationState<double>(newNumbers, newOpeations);
         }
 
         private static double InternalCalculate(double firstNum, double secondNum, char operatorChar)

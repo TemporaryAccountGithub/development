@@ -31,10 +31,10 @@ namespace CalculatorTests
             expectedExpression = new List<string>{ "1", "2" };
             expectedOperations = new List<char> { '+' };
 
-            var result = parser.ParseExpression(expression);
+            CalculationState<string> result = parser.ParseExpression(expression);
 
-            CollectionAssert.AreEqual(result.Item1, expectedExpression);
-            CollectionAssert.AreEqual(result.Item2, expectedOperations);
+            CollectionAssert.AreEqual(result.Expressions, expectedExpression);
+            CollectionAssert.AreEqual(result.Operations, expectedOperations);
         }
 
         [TestMethod]
@@ -98,10 +98,10 @@ namespace CalculatorTests
             expectedExpression = new List<string> { "1", "2" };
             expectedOperations = new List<char> { '^' };
 
-            var result = parser.ParseExpression(expression);
+            CalculationState<string> result = parser.ParseExpression(expression);
 
-            CollectionAssert.AreEqual(result.Item1, expectedExpression);
-            CollectionAssert.AreEqual(result.Item2, expectedOperations);
+            CollectionAssert.AreEqual(result.Expressions, expectedExpression);
+            CollectionAssert.AreEqual(result.Operations, expectedOperations);
         }
 
         [TestMethod]
@@ -111,10 +111,10 @@ namespace CalculatorTests
             expectedExpression = new List<string> { "0", "5" };
             expectedOperations = new List<char> { '&' };
 
-            var result = parser.ParseExpression(expression);
+            CalculationState<string> result = parser.ParseExpression(expression);
 
-            CollectionAssert.AreEqual(result.Item1, expectedExpression);
-            CollectionAssert.AreEqual(result.Item2, expectedOperations);
+            CollectionAssert.AreEqual(result.Expressions, expectedExpression);
+            CollectionAssert.AreEqual(result.Operations, expectedOperations);
         }
 
         [TestMethod]
@@ -130,10 +130,10 @@ namespace CalculatorTests
             expectedExpression = new List<string> { "2", "0", "5" };
             expectedOperations = new List<char> { '+', '&' };
 
-            var result = parser.ParseExpression(expression);
+            CalculationState<string> result = parser.ParseExpression(expression);
 
-            CollectionAssert.AreEqual(result.Item1, expectedExpression);
-            CollectionAssert.AreEqual(result.Item2, expectedOperations);
+            CollectionAssert.AreEqual(result.Expressions, expectedExpression);
+            CollectionAssert.AreEqual(result.Operations, expectedOperations);
         }
 
         [TestMethod]
@@ -185,10 +185,10 @@ namespace CalculatorTests
             expectedExpression = new List<string> { "123" };
             expectedOperations = new List<char>();
 
-            var result = parser.ParseExpression(expression);
+            CalculationState<string> result = parser.ParseExpression(expression);
 
-            CollectionAssert.AreEqual(expectedExpression, result.Item1);
-            CollectionAssert.AreEqual(expectedOperations, result.Item2);
+            CollectionAssert.AreEqual(expectedExpression, result.Expressions);
+            CollectionAssert.AreEqual(expectedOperations, result.Operations);
         }
 
         [TestMethod]
@@ -198,10 +198,10 @@ namespace CalculatorTests
             expectedExpression = new List<string> { "123+234" };
             expectedOperations = new List<char>();
 
-            var result = parser.ParseExpression(expression);
+            CalculationState<string> result = parser.ParseExpression(expression);
 
-            CollectionAssert.AreEqual(expectedExpression, result.Item1);
-            CollectionAssert.AreEqual(expectedOperations, result.Item2);
+            CollectionAssert.AreEqual(expectedExpression, result.Expressions);
+            CollectionAssert.AreEqual(expectedOperations, result.Operations);
         }
     }
 }

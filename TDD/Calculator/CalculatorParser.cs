@@ -14,7 +14,7 @@ namespace CalculatorLibrary
             ValidateBrackets(expression);
         }
 
-        public (List<string>, List<char>) ParseExpression(string expression)
+        public CalculationState<string> ParseExpression(string expression)
         {
             List<string> expressions = new List<string>();
             List<char> operations = new List<char>();
@@ -47,7 +47,7 @@ namespace CalculatorLibrary
                 }
             }
 
-            return (expressions, operations);
+            return new CalculationState<string>(expressions, operations);
         }
 
         private void ValidateRegexExpression(string expression)

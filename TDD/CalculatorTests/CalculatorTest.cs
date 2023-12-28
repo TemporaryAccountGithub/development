@@ -374,7 +374,7 @@ namespace CalculatorTests
         public void given_validComplexLongString_when_CalculateWithMock_then_returnResult()
         {
             var mockParser = new Mock<ICalculatorParser>();
-            mockParser.Setup(parser => parser.ParseExpression(It.IsAny<string>())).Returns((new List<string> { "1", "2" }, new List<char> { '+' }));
+            mockParser.Setup(parser => parser.ParseExpression(It.IsAny<string>())).Returns(new CalculationState<string>(new List<string> { "1", "2" }, new List<char> { '+' }));
             Calculator.SetCalculatorParser(mockParser.Object);
 
             double expected = 3;
