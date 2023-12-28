@@ -48,9 +48,9 @@ namespace CalculatorLibrary
             return (expressions, operations);
         }
 
-        public (List<double>, List<char>) ParseBaseExpression(string expression)
+        public (List<string>, List<char>) ParseExpression(string expression)
         {
-            List<double> numbers = new List<double>();
+            List<string> numbers = new List<string>();
             List<char> operations = new List<char>();
 
             expression = expression.Replace("E+", "E");
@@ -68,12 +68,12 @@ namespace CalculatorLibrary
                 {
                     if (StartWithUnaryOperation(current))
                     {
-                        numbers.Add(0);
+                        numbers.Add("0");
                         operations.Add(current[0]);
                         current = current.Substring(1);
                     }
                     
-                    numbers.Add(double.Parse(current));
+                    numbers.Add(current);
                 }
             }
 

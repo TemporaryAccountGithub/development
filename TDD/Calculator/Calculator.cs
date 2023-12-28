@@ -21,10 +21,11 @@
         public static double Calculate(string expression)
         {
             List<Func<char, bool>> priorities = new List<Func<char, bool>> { IsTopPriority, IsHighPriority, IsLastPriority };
-            List<double> numbers;
+            List<string> numbersStrings;
             List<char> operations;
             calculatorParser.ValidateExpression(expression);
-            (numbers, operations) = calculatorParser.ParseBaseExpression(expression);
+            (numbersStrings, operations) = calculatorParser.ParseExpression(expression);
+            List<double> numbers = numbersStrings.Select(double.Parse).ToList();
 
             foreach (var priority in priorities)
             {
