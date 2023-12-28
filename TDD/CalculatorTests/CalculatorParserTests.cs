@@ -38,6 +38,60 @@ namespace CalculatorTests
         }
 
         [TestMethod]
+        public void given_invalidOperatorString_when_validate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("0$0"));
+        }
+
+        [TestMethod]
+        public void given_invalidOperatorStringWithValidOperator_when_validate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("0$/0"));
+        }
+
+        [TestMethod]
+        public void given_oneNumberString_when_validate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("123+"));
+        }
+
+        [TestMethod]
+        public void given_OperationAndOneNumberString_when_validate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("*123"));
+        }
+
+        [TestMethod]
+        public void given_OperationAndExpressionString_when_validate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("*123+12"));
+        }
+
+        [TestMethod]
+        public void given_MultipleOperationsString_when_validate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("123+*123"));
+        }
+
+        [TestMethod]
+        public void given_MultipleAddOperationsString_when_validate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("123++123"));
+        }
+
+        [TestMethod]
+        public void given_emptyString_when_validate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression(""));
+        }
+
+        [TestMethod]
+        public void given_MultipleSubOperationOnStartString_when_validate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("--5-3"));
+        }
+
+        [TestMethod]
         public void given_stringWithPower_when_parse_then_returnLists()
         {
             expression = "1^2";

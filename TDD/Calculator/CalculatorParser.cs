@@ -14,11 +14,6 @@ namespace CalculatorLibrary
             ValidateBrackets(expression);
         }
 
-        public bool IsBracketsExpression(string expression)
-        {
-            return expression.Contains("(");
-        }
-
         public (List<string>, List<char>) ParseExpression(string expression)
         {
             List<string> expressions = new List<string>();

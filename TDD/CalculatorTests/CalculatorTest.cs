@@ -321,54 +321,6 @@ namespace CalculatorTests
         }
 
         [TestMethod]
-        public void given_invalidOperatorString_when_Calculating_then_throwException()
-        {
-            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("0$0"));
-        }
-
-        [TestMethod]
-        public void given_invalidOperatorWithRealOperatorString_when_Calculating_then_throwException()
-        {
-            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("0$/0"));
-        }
-
-        [TestMethod]
-        public void given_oneNumberString_when_Calculating_then_throwException()
-        {
-            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("123+"));
-        }
-
-        [TestMethod]
-        public void given_OperationAndOneNumberString_when_Calculating_then_throwException()
-        {
-            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("*123"));
-        }
-
-        [TestMethod]
-        public void given_OperationAndExpressionString_when_Calculating_then_throwException()
-        {
-            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("*123+12"));
-        }
-
-        [TestMethod]
-        public void given_MultipleOperationsString_when_Calculating_then_throwException()
-        {
-            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("123+*123"));
-        }
-
-        [TestMethod]
-        public void given_MultipleAddOperationsString_when_Calculating_then_throwException()
-        {
-            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("123++123"));
-        }
-
-        [TestMethod]
-        public void given_emptyString_when_Calculating_then_throwException()
-        {
-            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate(""));
-        }
-
-        [TestMethod]
         public void given_NumberDotString_when_Calculating_then_returnCalculation()
         {
             Assert.AreEqual(Calculator.Calculate("5.+5"), 10);
@@ -378,12 +330,6 @@ namespace CalculatorTests
         public void given_DotNumberString_when_Calculating_then_returnCalculation()
         {
             Assert.AreEqual(Calculator.Calculate(".5+.5"), 1);
-        }
-
-        [TestMethod]
-        public void given_MultipleSubOperationOnStartString_when_Calculating_then_throwException()
-        {
-            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("--5-3"));
         }
 
         [TestMethod]
