@@ -4,8 +4,9 @@ namespace CalculatorLibrary
 {
     public class CalculatorParser : ICalculatorParser
     {
-        private const string ValidPattern = @"^(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?([-+*/^](-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?))+)$";
-        private const string MatchPattern = @"((?<=(\d|\.))[+\-*/^])|(-?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
+        private const string ValidPattern = @"^([-&]?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?([-+*/^]([-&]?&?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?))*)$";
+        private const string MatchPattern = @"((?<=(\d|\.))[+\-*/^])|([-&]?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
+        private const char UnaryOperation = '&';
 
         public (List<double>, List<char>) ParseExpression(string expression)
         {
@@ -18,13 +19,22 @@ namespace CalculatorLibrary
 
             for (int i = 0; i < matches.Count; i++)
             {
+                string current = matches[i].Value;
+
                 if (i % 2 == 1)
                 {
-                    operations.Add(char.Parse(matches[i].Value));
+                    operations.Add(char.Parse(current));
                 }
                 else
                 {
-                    numbers.Add(double.Parse(matches[i].Value));
+                    if (StartWithUnaryOperation(current))
+                    {
+                        numbers.Add(0);
+                        operations.Add(current[0]);
+                        current = current.Substring(1);
+                    }
+                    
+                    numbers.Add(double.Parse(current));
                 }
             }
 
@@ -37,6 +47,11 @@ namespace CalculatorLibrary
             {
                 throw new ArgumentException("Invalid expression!");
             }
+        }
+
+        private bool StartWithUnaryOperation(string number)
+        {
+            return number[0] == UnaryOperation;
         }
     }
 }

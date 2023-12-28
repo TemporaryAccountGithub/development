@@ -452,6 +452,12 @@ namespace CalculatorTests
             Assert.AreEqual(Calculator.Calculate("2*2^3"), 16);
         }
 
+        [TestMethod]
+        public void given_stringWithOneNumber_when_Calculate_then_returnNumber()
+        {
+            Assert.AreEqual(Calculator.Calculate("234"), 234);
+        }
+
         //[TestMethod]
         //public void given_rootNumberString_when_Calculate_then_returnResult()
         //{
