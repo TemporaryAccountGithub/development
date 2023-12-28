@@ -475,5 +475,17 @@ namespace CalculatorTests
         {
             Assert.AreEqual(Calculator.Calculate("&4"), 2);
         }
+
+        [TestMethod]
+        public void given_rootNumberStringLong_when_Calculate_then_returnResult()
+        {
+            Assert.AreEqual(Calculator.Calculate("2+&4*5"), 12);
+        }
+
+        [TestMethod]
+        public void given_rootNegativeNumber_when_Calculate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => Calculator.Calculate("&-5"));
+        }
     }
 }

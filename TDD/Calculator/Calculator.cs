@@ -128,7 +128,13 @@
 
         private static double Root(double number)
         {
-            return Math.Sqrt(number);
+            double result = Math.Sqrt(number);
+            if (result == double.NaN)
+            {
+                throw new ArgumentException("Cannot root on negative numbers");
+            }
+
+            return result;
         }
 
         private static void DoubleOverflowSumCheck(double firstNum, double secondNum)
