@@ -59,11 +59,11 @@
 
         private static double CalculateRecursive(string expression)
         {
-            List<Func<char, bool>> priorities = new List<Func<char, bool>> { IsTopPriority, IsHighPriority, IsLastPriority };
+            List<double> numbers = new List<double>();
             List<string> expressions;
             List<char> operations;
-            List<double> numbers = new List<double>();
             double number;
+
             (expressions, operations) = calculatorParser.ParseExpression(expression);
 
             foreach (string rawExpression in expressions)
@@ -75,6 +75,13 @@
 
                 numbers.Add(number);
             }
+
+            return CalculateFromLists(numbers, operations);
+        }
+
+        private static double CalculateFromLists(List<double> numbers, List<char> operations)
+        {
+            List<Func<char, bool>> priorities = new List<Func<char, bool>> { IsTopPriority, IsHighPriority, IsLastPriority };
 
             foreach (var priority in priorities)
             {
