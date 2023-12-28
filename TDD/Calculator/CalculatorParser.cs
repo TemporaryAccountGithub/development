@@ -6,6 +6,7 @@ namespace CalculatorLibrary
     {
         private const string ValidPattern = @"^((\()*[-&]?(\d+(\.\d*)?|(\.\d+))([Ee][+]?\d+)?(\))*([-+*/^]((\()*[-&]?&?(\d+(\.\d*)?|(\.\d+))([Ee][+]?\d+)?(\))*))*)$";
         private const string MatchPattern = @"((?<=(\d|\.))[+\-*/^])|([-&]?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
+        private const string bracketsPattern = @"\(((?>[^()]+|\((?<DEPTH>)|\)(?<-DEPTH>))*)(?(DEPTH)(?!))\)|((?<=(\d|\.|\)))[+\-*/^])|([-&]?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
         private const char UnaryOperation = '&';
 
         public void ValidateExpression(string expression)
@@ -19,9 +20,32 @@ namespace CalculatorLibrary
             return expression.Contains("(");
         }
 
-        public List<string> ParseBracketsExpression(string expression) 
+        public (List<string>, List<char>) ParseBracketsExpression(string expression) 
         {
-            return new List<string>();
+            List<string> expressions = new List<string>();
+            List<char> operations = new List<char>();
+
+            MatchCollection matches = Regex.Matches(expression, MatchPattern);
+            for (int i = 0; i < matches.Count; i++)
+            {
+                string current = matches[i].Value;
+
+                if (i % 2 == 1)
+                {
+                    operations.Add(char.Parse(current));
+                }
+                else
+                {
+                    if (BracketsExpression(current))
+                    {
+                        current = current.Substring(1, current.Length - 2);
+                    }
+
+                    expressions.Add(current);
+                }
+            }
+
+            return (expressions, operations);
         }
 
         public (List<double>, List<char>) ParseBaseExpression(string expression)
@@ -30,7 +54,6 @@ namespace CalculatorLibrary
             List<char> operations = new List<char>();
 
             expression = expression.Replace("E+", "E");
-            ValidateRegexExpression(expression);
             MatchCollection matches = Regex.Matches(expression, MatchPattern);
 
             for (int i = 0; i < matches.Count; i++)
@@ -96,6 +119,11 @@ namespace CalculatorLibrary
         private bool StartWithUnaryOperation(string number)
         {
             return number[0] == UnaryOperation;
+        }
+
+        private bool BracketsExpression(string expression)
+        {
+            return expression.StartsWith("(");
         }
 
         private void ValidateFail()

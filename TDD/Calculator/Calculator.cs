@@ -23,6 +23,7 @@
             List<Func<char, bool>> priorities = new List<Func<char, bool>> { IsTopPriority, IsHighPriority, IsLastPriority };
             List<double> numbers;
             List<char> operations;
+            calculatorParser.ValidateExpression(expression);
             (numbers, operations) = calculatorParser.ParseBaseExpression(expression);
 
             foreach (var priority in priorities)

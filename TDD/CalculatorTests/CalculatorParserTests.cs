@@ -10,6 +10,7 @@ namespace CalculatorTests
         ICalculatorParser parser;
         List<double> expectedNumbers;
         List<char> expectedOperations;
+        List<string> expectedExpression;
         string expression;
 
         [TestInitialize]
@@ -128,6 +129,25 @@ namespace CalculatorTests
         public void given_bracketsNestedValid_when_validate_then_doNothing()
         {
             parser.ValidateExpression("(123)+6*(12+(23-4))");
+        }
+
+        [TestMethod]
+        public void given_bracketsWithoutOperation_when_validate_then_rhrowException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("12(12)"));
+        }
+
+        [TestMethod]
+        public void given_bracketsString_when_parseBrackets_then_returnResult()
+        {
+            expression = "(123)";
+            expectedExpression = new List<string> { "123" };
+            expectedOperations = new List<char>();
+
+            var result = parser.ParseBracketsExpression(expression);
+
+            CollectionAssert.AreEqual(expectedExpression, result.Item1);
+            CollectionAssert.AreEqual(expectedOperations, result.Item2);
         }
     }
 }

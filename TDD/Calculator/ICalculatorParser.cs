@@ -10,7 +10,7 @@ namespace CalculatorLibrary
     {
         void ValidateExpression (string expression);
         bool IsBracketsExpression(string expression);
-        List<string> ParseBracketsExpression(string expression);
+        (List<string>, List<char>) ParseBracketsExpression(string expression);
         (List<double>, List<char>) ParseBaseExpression(string expression);
     }
 }
