@@ -116,7 +116,7 @@ namespace CalculatorLibrary
                     {
                         double firstNum = newNumbers.Last();
                         double nextNumber = state.Expressions[nextNumberIndex++];
-                        result = InternalCalculate(firstNum, nextNumber, currentOperation);
+                        result = Calculate(firstNum, nextNumber, currentOperation);
                     }
 
                     newNumbers[newNumbers.Count - 1] = result;
@@ -133,11 +133,6 @@ namespace CalculatorLibrary
             }
 
             return new CalculationState<double>(newNumbers, newOperations);
-        }
-
-        private static double InternalCalculate(double firstNum, double secondNum, char operatorChar)
-        {
-            return Calculate(firstNum, secondNum, operatorChar);
         }
 
         private static double HandleUnaryOperation(double number, char operatorChar)
