@@ -108,7 +108,7 @@ namespace CalculatorTests
         public void given_stringWithSqrt_when_parse_then_returnLists()
         {
             expression = "&5";
-            expectedExpression = new List<string> { "0", "5" };
+            expectedExpression = new List<string> { "5" };
             expectedOperations = new List<char> { '&' };
 
             CalculationState<string> result = parser.ParseExpression(expression);
@@ -127,7 +127,7 @@ namespace CalculatorTests
         public void given_longStringWithSqrt_when_parse_then_returnLists()
         {
             expression = "2+&5";
-            expectedExpression = new List<string> { "2", "0", "5" };
+            expectedExpression = new List<string> { "2", "5" };
             expectedOperations = new List<char> { '+', '&' };
 
             CalculationState<string> result = parser.ParseExpression(expression);
@@ -176,6 +176,12 @@ namespace CalculatorTests
         public void given_bracketsWithoutOperation_when_validate_then_rhrowException()
         {
             Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("12(12)"));
+        }
+
+        [TestMethod]
+        public void given_bracketsWithCorrectNumberWrongOrder_when_validate_then_rhrowException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("(12))+(4"));
         }
 
         [TestMethod]

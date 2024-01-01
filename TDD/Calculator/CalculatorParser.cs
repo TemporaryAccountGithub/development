@@ -34,7 +34,6 @@ namespace CalculatorLibrary
                 {
                     if (StartWithUnaryOperation(current))
                     {
-                        expressions.Add("0");
                         operations.Add(current[0]);
                         current = current.Substring(1);
                     }

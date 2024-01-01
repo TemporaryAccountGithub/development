@@ -1,4 +1,6 @@
-﻿namespace CalculatorLibrary
+﻿using static System.Net.Mime.MediaTypeNames;
+
+namespace CalculatorLibrary
 {
     public class Calculator
     {
@@ -93,40 +95,49 @@
         private static CalculationState<double> PerformPriorityCalculation(Func<char, bool> isPriority, CalculationState<double> state)
         {
             List<double> newNumbers = new List<double>();
-            List<char> newOpeations = new List<char>();
+            List<char> newOperations = new List<char>();
             newNumbers.Add(state.Expressions.First());
+            int nextNumberIndex = 1;
 
             for (int i = 0; i < state.Operations.Count; i++)
             {
-                double next = state.Expressions[i + 1];
                 char currentOperation = state.Operations[i];
 
                 if (isPriority(currentOperation))
                 {
-                    double firstNum = newNumbers.Last();
-                    double result = InternalCalculate(firstNum, next, currentOperation);
+                    double result;
+
+                    if (IsUnaryOperation(currentOperation))
+                    {
+                        result = HandleUnaryOperation(newNumbers.Last(), currentOperation);
+                        newNumbers[newNumbers.Count - 1] = result;
+                    }
+                    else 
+                    {
+                        double firstNum = newNumbers.Last();
+                        double nextNumber = state.Expressions[nextNumberIndex++];
+                        result = InternalCalculate(firstNum, nextNumber, currentOperation);
+                    }
+
                     newNumbers[newNumbers.Count - 1] = result;
                 }
                 else
                 {
-                    newNumbers.Add(next);
-                    newOpeations.Add(currentOperation);
+                    newOperations.Add(currentOperation);
+                    
+                    if (!IsUnaryOperation(currentOperation))
+                    {
+                        newNumbers.Add(state.Expressions[nextNumberIndex++]);
+                    }
                 }
             }
 
-            return new CalculationState<double>(newNumbers, newOpeations);
+            return new CalculationState<double>(newNumbers, newOperations);
         }
 
         private static double InternalCalculate(double firstNum, double secondNum, char operatorChar)
         {
-            if (IsUnaryOperation(operatorChar))
-            {
-                return HandleUnaryOperation(secondNum, operatorChar);
-            }
-            else
-            {
-                return Calculate(firstNum, secondNum, operatorChar);
-            }
+            return Calculate(firstNum, secondNum, operatorChar);
         }
 
         private static double HandleUnaryOperation(double number, char operatorChar)
