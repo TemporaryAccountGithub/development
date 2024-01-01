@@ -4,8 +4,8 @@ namespace CalculatorLibrary
 {
     public class CalculatorParser : ICalculatorParser
     {
-        private const string ValidPattern = @"^((\()*[-&]?(\d+(\.\d*)?|(\.\d+))([Ee][+]?\d+)?(\))*([-+*/^]((\()*[-&]?&?(\d+(\.\d*)?|(\.\d+))([Ee][+]?\d+)?(\))*))*)$";
-        private const string MatchPattern = @"\(((?>[^()]+|\((?<DEPTH>)|\)(?<-DEPTH>))*)(?(DEPTH)(?!))\)|((?<=(\d|\.|\)))[+\-*/^])|([-&]?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
+        private const string ValidPattern = @"^((&?\()*[-&]?(\d+(\.\d*)?|(\.\d+))([Ee][+]?\d+)?(\))*([-+*/^]((&?\()*[-&]?(\d+(\.\d*)?|(\.\d+))([Ee][+]?\d+)?(\))*))*)$";
+        private const string MatchPattern = @"&?\(((?>[^()]+|\((?<DEPTH>)|\)(?<-DEPTH>))*)(?(DEPTH)(?!))\)|((?<=(\d|\.|\)))[+\-*/^])|([-&]?(\d+(\.\d*)?|(\.\d+))([Ee]\d+)?)";
         private const char UnaryOperation = '&';
 
         public void ValidateExpression(string expression)
@@ -17,7 +17,7 @@ namespace CalculatorLibrary
         public CalculationState<string> ParseExpression(string expression)
         {
             List<string> expressions = new List<string>();
-            List<char> operations = new List<char>();
+            List<Operator> operations = new List<Operator>();
 
             expression = expression.Replace("E+", "E");
             MatchCollection matches = Regex.Matches(expression, MatchPattern);
@@ -28,13 +28,13 @@ namespace CalculatorLibrary
 
                 if (i % 2 == 1)
                 {
-                    operations.Add(char.Parse(current));
+                    operations.Add(new Operator(char.Parse(current)));
                 }
                 else
                 {
                     if (StartWithUnaryOperation(current))
                     {
-                        operations.Add(current[0]);
+                        operations.Add(new Operator(current[0]));
                         current = current.Substring(1);
                     }
                     else if (BracketsExpression(current))

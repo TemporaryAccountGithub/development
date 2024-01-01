@@ -1,19 +1,8 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-
-namespace CalculatorLibrary
+﻿namespace CalculatorLibrary
 {
     public class Calculator
     {
         private static ICalculatorParser calculatorParser = new CalculatorParser();
-        private static class CharOperations
-        {
-            public const char Add = '+';
-            public const char Substruct = '-';
-            public const char Multiply = '*';
-            public const char Divide = '/';
-            public const char Power = '^';
-            public const char Root = '&';
-        }
 
         public static void SetCalculatorParser(ICalculatorParser parser)
         {
@@ -26,34 +15,34 @@ namespace CalculatorLibrary
             return CalculateRecursive(expression);
         }
 
-        public static double Calculate(double firstNum, double secondNum, char operatorChar)
+        public static double Calculate(double firstNum, double secondNum, Operator currentOperator)
         {
             double result = 0;
 
-            switch (operatorChar)
+            switch (currentOperator.OperatorSymbol)
             {
-                case CharOperations.Add:
+                case CharOperator.Add:
                     result = Add(firstNum, secondNum);
                     break;
 
-                case CharOperations.Multiply:
+                case CharOperator.Multiply:
                     result = Multiply(firstNum, secondNum);
                     break;
 
-                case CharOperations.Substruct:
+                case CharOperator.Substruct:
                     result = Substruct(firstNum, secondNum);
                     break;
 
-                case CharOperations.Divide:
+                case CharOperator.Divide:
                     result = Divide(firstNum, secondNum);
                     break;
 
-                case CharOperations.Power:
+                case CharOperator.Power:
                     result = Power(firstNum, secondNum);
                     break;
 
                 default:
-                    throw new ArgumentException("Invalid operator: " + operatorChar);
+                    throw new ArgumentException("Invalid operator: " + currentOperator.OperatorSymbol);
             }
 
             return result;
@@ -82,9 +71,7 @@ namespace CalculatorLibrary
 
         private static double CalculateFromLists(CalculationState<double> state)
         {
-            List<Func<char, bool>> priorities = new List<Func<char, bool>> { IsTopPriority, IsHighPriority, IsLastPriority };
-
-            foreach (var priority in priorities)
+            foreach (OperatorPriority priority in Enum.GetValues(typeof(OperatorPriority)))
             {
                 state = PerformPriorityCalculation(priority, state);
             }
@@ -92,27 +79,27 @@ namespace CalculatorLibrary
             return state.Expressions.First();
         }
 
-        private static CalculationState<double> PerformPriorityCalculation(Func<char, bool> isPriority, CalculationState<double> state)
+        private static CalculationState<double> PerformPriorityCalculation(OperatorPriority priority, CalculationState<double> state)
         {
             List<double> newNumbers = new List<double>();
-            List<char> newOperations = new List<char>();
+            List<Operator> newOperations = new List<Operator>();
             newNumbers.Add(state.Expressions.First());
             int nextNumberIndex = 1;
 
             for (int i = 0; i < state.Operations.Count; i++)
             {
-                char currentOperation = state.Operations[i];
+                Operator currentOperation = state.Operations[i];
 
-                if (isPriority(currentOperation))
+                if (currentOperation.GetPriority() == priority)
                 {
                     double result;
 
-                    if (IsUnaryOperation(currentOperation))
+                    if (currentOperation.IsUnaryOperation())
                     {
                         result = HandleUnaryOperation(newNumbers.Last(), currentOperation);
                         newNumbers[newNumbers.Count - 1] = result;
                     }
-                    else 
+                    else
                     {
                         double firstNum = newNumbers.Last();
                         double nextNumber = state.Expressions[nextNumberIndex++];
@@ -124,8 +111,8 @@ namespace CalculatorLibrary
                 else
                 {
                     newOperations.Add(currentOperation);
-                    
-                    if (!IsUnaryOperation(currentOperation))
+
+                    if (!currentOperation.IsUnaryOperation())
                     {
                         newNumbers.Add(state.Expressions[nextNumberIndex++]);
                     }
@@ -135,7 +122,7 @@ namespace CalculatorLibrary
             return new CalculationState<double>(newNumbers, newOperations);
         }
 
-        private static double HandleUnaryOperation(double number, char operatorChar)
+        private static double HandleUnaryOperation(double number, Operator operatorChar)
         {
             return Root(number);
         }
@@ -213,26 +200,6 @@ namespace CalculatorLibrary
             {
                 throw new OverflowException("Product or division causes double overflow!");
             }
-        }
-
-        private static bool IsTopPriority(char operationChar)
-        {
-            return operationChar == CharOperations.Power || operationChar == CharOperations.Root;
-        }
-
-        private static bool IsHighPriority(char operationChar)
-        {
-            return operationChar == CharOperations.Multiply || operationChar == CharOperations.Divide;
-        }
-
-        private static bool IsLastPriority(char operationChar)
-        {
-            return operationChar == CharOperations.Add || operationChar == CharOperations.Substruct;
-        }
-
-        private static bool IsUnaryOperation(char operationChar)
-        {
-            return operationChar == CharOperations.Root;
         }
     }
 }

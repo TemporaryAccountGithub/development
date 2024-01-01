@@ -1,22 +1,14 @@
 ﻿using CalculatorLibrary;
-using Moq;
-
 
 namespace CalculatorTests
 {
     [TestClass]
     public class CalculatorParserTests
     {
-        ICalculatorParser parser;
-        List<char> expectedOperations;
-        List<string> expectedExpression;
-        string expression;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            parser = new CalculatorParser();
-        }
+        ICalculatorParser parser = new CalculatorParser();
+        List<Operator> expectedOperations = new List<Operator>();
+        List<string> expectedExpression = new List<string>();
+        string expression = "";
 
         [TestMethod]
         public void given_validString_when_Validate_then_doesNothig()
@@ -29,7 +21,7 @@ namespace CalculatorTests
         {
             expression = "1+2";
             expectedExpression = new List<string>{ "1", "2" };
-            expectedOperations = new List<char> { '+' };
+            expectedOperations = new List<Operator> { new Operator('+') };
 
             CalculationState<string> result = parser.ParseExpression(expression);
 
@@ -96,7 +88,7 @@ namespace CalculatorTests
         {
             expression = "1^2";
             expectedExpression = new List<string> { "1", "2" };
-            expectedOperations = new List<char> { '^' };
+            expectedOperations = new List<Operator> { new Operator('^') };
 
             CalculationState<string> result = parser.ParseExpression(expression);
 
@@ -109,7 +101,7 @@ namespace CalculatorTests
         {
             expression = "&5";
             expectedExpression = new List<string> { "5" };
-            expectedOperations = new List<char> { '&' };
+            expectedOperations = new List<Operator> { new Operator('&') };
 
             CalculationState<string> result = parser.ParseExpression(expression);
 
@@ -124,11 +116,17 @@ namespace CalculatorTests
         }
 
         [TestMethod]
+        public void given_rootNegativeNumber_when_Validate_then_throwException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => parser.ValidateExpression("&-5"));
+        }
+
+        [TestMethod]
         public void given_longStringWithSqrt_when_parse_then_returnLists()
         {
             expression = "2+&5";
             expectedExpression = new List<string> { "2", "5" };
-            expectedOperations = new List<char> { '+', '&' };
+            expectedOperations = new List<Operator> { new Operator('+'), new Operator('&') };
 
             CalculationState<string> result = parser.ParseExpression(expression);
 
@@ -189,7 +187,7 @@ namespace CalculatorTests
         {
             expression = "(123)";
             expectedExpression = new List<string> { "123" };
-            expectedOperations = new List<char>();
+            expectedOperations = new List<Operator>();
 
             CalculationState<string> result = parser.ParseExpression(expression);
 
@@ -202,7 +200,7 @@ namespace CalculatorTests
         {
             expression = "(123+234)";
             expectedExpression = new List<string> { "123+234" };
-            expectedOperations = new List<char>();
+            expectedOperations = new List<Operator>();
 
             CalculationState<string> result = parser.ParseExpression(expression);
 

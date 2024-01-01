@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CalculatorLibrary
+﻿namespace CalculatorLibrary
 {
     public struct CalculationState<T>
     {
         public List<T> Expressions { get; }
-        public List<char> Operations { get; }
+        public List<Operator> Operations { get; }
 
-        public CalculationState(List<T> expressions, List<char> operations)
+        public CalculationState(List<T> expressions, List<Operator> operations)
         {
             Expressions = expressions;
             Operations = operations;
