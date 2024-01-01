@@ -85,14 +85,14 @@ namespace CalculatorLibrary
             }
         }
 
-        private bool StartWithUnaryOperation(string number)
+        private bool StartWithUnaryOperation(string expression)
         {
-            return number[0] == UnaryOperation;
+            return expression.StartsWith(UnaryOperation);
         }
 
         private bool BracketsExpression(string expression)
         {
-            return expression.StartsWith("(");
+            return expression.StartsWith("(") && expression.EndsWith(")");
         }
 
         private void ValidateFail()
