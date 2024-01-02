@@ -2,88 +2,139 @@
 {
     public class Calculator
     {
-        private static class CharOperations
+        private ICalculatorParser calculatorParser = new CalculatorParser();
+
+        public void SetCalculatorParser(ICalculatorParser parser)
         {
-            public const char Add = '+';
-            public const char Substruct = '-';
-            public const char Multiply = '*';
-            public const char Divide = '/';
+            calculatorParser = parser;
         }
 
-        public static double Calculate(string expression)
+        public double Calculate(string expression)
         {
-            List<double> numbersToAdd = new List<double>();
-            List<string> expressionValues = CalculatorParser.ParseExpression(expression);
-
-            numbersToAdd.Add(double.Parse(expressionValues[0]));
-
-            for (int i = 1; i < expressionValues.Count - 1; i += 2)
-            {
-                {
-                    double nextNumber = double.Parse(expressionValues[i + 1]);
-                    char operationChar = char.Parse(expressionValues[i]);
-
-                    switch (operationChar)
-                    {
-                        case CharOperations.Multiply:
-                        case CharOperations.Divide:
-                            double firstNum = numbersToAdd.Last();
-                            double result = Calculate(firstNum, nextNumber, operationChar);
-                            numbersToAdd[numbersToAdd.Count - 1] = result;
-                            break;
-
-                        case CharOperations.Substruct:
-                            double opposite = Calculate(0, nextNumber, operationChar);
-                            numbersToAdd.Add(opposite);
-                            break;
-
-                        case CharOperations.Add:
-                            numbersToAdd.Add(nextNumber);
-                            break;
-                    }
-                }
-            }
-
-            return ListSum(numbersToAdd);
+            calculatorParser.ValidateExpression(expression);
+            return CalculateRecursive(expression);
         }
 
-        public static double Calculate(double firstNum, double secondNum, char operatorChar)
+        public double Calculate(double firstNum, double secondNum, Operator currentOperator)
         {
             double result = 0;
 
-            switch (operatorChar)
+            switch (currentOperator.OperatorSymbol)
             {
-                case CharOperations.Add:
+                case CharOperator.Add:
                     result = Add(firstNum, secondNum);
                     break;
 
-                case CharOperations.Multiply:
+                case CharOperator.Multiply:
                     result = Multiply(firstNum, secondNum);
                     break;
 
-                case CharOperations.Substruct:
+                case CharOperator.Substruct:
                     result = Substruct(firstNum, secondNum);
                     break;
 
-                case CharOperations.Divide:
+                case CharOperator.Divide:
                     result = Divide(firstNum, secondNum);
                     break;
 
+                case CharOperator.Power:
+                    result = Power(firstNum, secondNum);
+                    break;
+
                 default:
-                    throw new ArgumentException("Invalid operator: " + operatorChar);
+                    throw new ArgumentException("Invalid operator: " + currentOperator.OperatorSymbol);
             }
 
             return result;
         }
 
-        private static double Add(double firstNum, double secondNum)
+        private double CalculateRecursive(string expression)
+        {
+            List<double> numbers = new List<double>();
+            CalculationState<string> state;
+            double number;
+
+            state = calculatorParser.ParseExpression(expression);
+
+            foreach (string rawExpression in state.Expressions)
+            {
+                if (!double.TryParse(rawExpression, out number))
+                {
+                    number = CalculateRecursive(rawExpression);
+                }
+
+                numbers.Add(number);
+            }
+
+            return CalculateFromLists(new CalculationState<double>(numbers, state.Operations));
+        }
+
+        private double CalculateFromLists(CalculationState<double> state)
+        {
+            foreach (OperatorPriority priority in Enum.GetValues(typeof(OperatorPriority)))
+            {
+                state = PerformPriorityCalculation(priority, state);
+            }
+
+            return state.Expressions.First();
+        }
+
+        private CalculationState<double> PerformPriorityCalculation(OperatorPriority priority, CalculationState<double> state)
+        {
+            List<double> newNumbers = new List<double>();
+            List<Operator> newOperations = new List<Operator>();
+            newNumbers.Add(state.Expressions.First());
+            int nextNumberIndex = 1;
+
+            for (int i = 0; i < state.Operations.Count; i++)
+            {
+                Operator currentOperation = state.Operations[i];
+
+                if (currentOperation.GetPriority() == priority)
+                {
+                    double result;
+
+                    if (currentOperation.IsUnaryOperation())
+                    {
+                        result = HandleUnaryOperation(newNumbers.Last(), currentOperation);
+                        newNumbers[newNumbers.Count - 1] = result;
+                    }
+                    else
+                    {
+                        double firstNum = newNumbers.Last();
+                        double nextNumber = state.Expressions[nextNumberIndex++];
+                        result = Calculate(firstNum, nextNumber, currentOperation);
+                    }
+
+                    newNumbers[newNumbers.Count - 1] = result;
+                }
+                else
+                {
+                    newOperations.Add(currentOperation);
+
+                    if (!currentOperation.IsUnaryOperation())
+                    {
+                        newNumbers.Add(state.Expressions[nextNumberIndex++]);
+                    }
+                }
+            }
+
+            return new CalculationState<double>(newNumbers, newOperations);
+        }
+
+        private double HandleUnaryOperation(double number, Operator operatorChar)
+        {
+            return Root(number);
+        }
+
+        private double Add(double firstNum, double secondNum)
         {
             DoubleOverflowSumCheck(firstNum, secondNum);
 
             return firstNum + secondNum;
         }
 
-        private static double Multiply(double firstNum, double secondNum)
+        private double Multiply(double firstNum, double secondNum)
         {
             double product = firstNum * secondNum;
             DoubleInfinityCheck(product);
@@ -91,14 +142,14 @@
             return product;
         }
 
-        private static double Substruct(double firstNum, double secondNum)
+        private double Substruct(double firstNum, double secondNum)
         {
             DoubleOverflowSumCheck(firstNum, -secondNum);
 
             return firstNum - secondNum;
         }
 
-        private static double Divide(double firstNum, double secondNum)
+        private double Divide(double firstNum, double secondNum)
         {
             if (secondNum == 0)
             {
@@ -111,7 +162,26 @@
             return quotient;
         }
 
-        private static void DoubleOverflowSumCheck(double firstNum, double secondNum)
+        private double Power(double firstNum, double secondNum)
+        {
+            double result = Math.Pow(firstNum, secondNum);
+            DoubleInfinityCheck(result);
+
+            return result;
+        }
+
+        private double Root(double number)
+        {
+            double result = Math.Sqrt(number);
+            if (result == double.NaN)
+            {
+                throw new ArgumentException("Cannot root on negative numbers");
+            }
+
+            return result;
+        }
+
+        private void DoubleOverflowSumCheck(double firstNum, double secondNum)
         {
             if ((firstNum > 0) && (secondNum > double.MaxValue - firstNum))
             {
@@ -124,24 +194,12 @@
             }
         }
 
-        private static void DoubleInfinityCheck(double value)
+        private void DoubleInfinityCheck(double value)
         {
             if (double.IsInfinity(value))
             {
                 throw new OverflowException("Product or division causes double overflow!");
             }
-        }
-
-        private static double ListSum(List<double> list)
-        {
-            double sum = 0;
-            
-            foreach (double number in list) 
-            {
-                sum = Calculate(sum, number, CharOperations.Add);
-            }
-
-            return sum;
         }
     }
 }
