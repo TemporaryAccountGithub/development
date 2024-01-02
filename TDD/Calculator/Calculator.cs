@@ -2,20 +2,20 @@
 {
     public class Calculator
     {
-        private static ICalculatorParser calculatorParser = new CalculatorParser();
+        private ICalculatorParser calculatorParser = new CalculatorParser();
 
-        public static void SetCalculatorParser(ICalculatorParser parser)
+        public void SetCalculatorParser(ICalculatorParser parser)
         {
             calculatorParser = parser;
         }
 
-        public static double Calculate(string expression)
+        public double Calculate(string expression)
         {
             calculatorParser.ValidateExpression(expression);
             return CalculateRecursive(expression);
         }
 
-        public static double Calculate(double firstNum, double secondNum, Operator currentOperator)
+        public double Calculate(double firstNum, double secondNum, Operator currentOperator)
         {
             double result = 0;
 
@@ -48,7 +48,7 @@
             return result;
         }
 
-        private static double CalculateRecursive(string expression)
+        private double CalculateRecursive(string expression)
         {
             List<double> numbers = new List<double>();
             CalculationState<string> state;
@@ -69,7 +69,7 @@
             return CalculateFromLists(new CalculationState<double>(numbers, state.Operations));
         }
 
-        private static double CalculateFromLists(CalculationState<double> state)
+        private double CalculateFromLists(CalculationState<double> state)
         {
             foreach (OperatorPriority priority in Enum.GetValues(typeof(OperatorPriority)))
             {
@@ -79,7 +79,7 @@
             return state.Expressions.First();
         }
 
-        private static CalculationState<double> PerformPriorityCalculation(OperatorPriority priority, CalculationState<double> state)
+        private CalculationState<double> PerformPriorityCalculation(OperatorPriority priority, CalculationState<double> state)
         {
             List<double> newNumbers = new List<double>();
             List<Operator> newOperations = new List<Operator>();
@@ -122,19 +122,19 @@
             return new CalculationState<double>(newNumbers, newOperations);
         }
 
-        private static double HandleUnaryOperation(double number, Operator operatorChar)
+        private double HandleUnaryOperation(double number, Operator operatorChar)
         {
             return Root(number);
         }
 
-        private static double Add(double firstNum, double secondNum)
+        private double Add(double firstNum, double secondNum)
         {
             DoubleOverflowSumCheck(firstNum, secondNum);
 
             return firstNum + secondNum;
         }
 
-        private static double Multiply(double firstNum, double secondNum)
+        private double Multiply(double firstNum, double secondNum)
         {
             double product = firstNum * secondNum;
             DoubleInfinityCheck(product);
@@ -142,14 +142,14 @@
             return product;
         }
 
-        private static double Substruct(double firstNum, double secondNum)
+        private double Substruct(double firstNum, double secondNum)
         {
             DoubleOverflowSumCheck(firstNum, -secondNum);
 
             return firstNum - secondNum;
         }
 
-        private static double Divide(double firstNum, double secondNum)
+        private double Divide(double firstNum, double secondNum)
         {
             if (secondNum == 0)
             {
@@ -162,7 +162,7 @@
             return quotient;
         }
 
-        private static double Power(double firstNum, double secondNum)
+        private double Power(double firstNum, double secondNum)
         {
             double result = Math.Pow(firstNum, secondNum);
             DoubleInfinityCheck(result);
@@ -170,7 +170,7 @@
             return result;
         }
 
-        private static double Root(double number)
+        private double Root(double number)
         {
             double result = Math.Sqrt(number);
             if (result == double.NaN)
@@ -181,7 +181,7 @@
             return result;
         }
 
-        private static void DoubleOverflowSumCheck(double firstNum, double secondNum)
+        private void DoubleOverflowSumCheck(double firstNum, double secondNum)
         {
             if ((firstNum > 0) && (secondNum > double.MaxValue - firstNum))
             {
@@ -194,7 +194,7 @@
             }
         }
 
-        private static void DoubleInfinityCheck(double value)
+        private void DoubleInfinityCheck(double value)
         {
             if (double.IsInfinity(value))
             {

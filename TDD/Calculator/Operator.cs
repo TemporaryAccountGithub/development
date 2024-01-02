@@ -21,6 +21,16 @@
     {
         public CharOperator OperatorSymbol;
 
+        private static Dictionary<CharOperator, OperatorPriority> operatorPriority = new Dictionary<CharOperator, OperatorPriority>
+        {
+            { CharOperator.Add, OperatorPriority.LowPriority },
+            { CharOperator.Substruct, OperatorPriority.LowPriority },
+            { CharOperator.Multiply, OperatorPriority.HighPriority },
+            { CharOperator.Divide, OperatorPriority.HighPriority },
+            { CharOperator.Power, OperatorPriority.TopPriority },
+            { CharOperator.Root, OperatorPriority.TopPriority }
+        };
+
         public Operator(CharOperator charOperator)
         {
             OperatorSymbol = charOperator;
@@ -38,27 +48,7 @@
 
         internal OperatorPriority GetPriority()
         {
-            OperatorPriority priority = OperatorPriority.LowPriority;
-
-            switch (OperatorSymbol) 
-            {
-                case CharOperator.Add:
-                case CharOperator.Substruct:
-                    priority = OperatorPriority.LowPriority;
-                    break;
-
-                case CharOperator.Multiply:
-                case CharOperator.Divide:
-                    priority = OperatorPriority.HighPriority;
-                    break;
-
-                case CharOperator.Root:
-                case CharOperator.Power:
-                    priority = OperatorPriority.TopPriority;
-                    break;
-            }
-
-            return priority;
+            return operatorPriority[OperatorSymbol];
         }
 
         internal bool IsUnaryOperation()

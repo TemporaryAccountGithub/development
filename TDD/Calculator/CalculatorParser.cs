@@ -53,7 +53,7 @@ namespace CalculatorLibrary
         {
             if (!Regex.IsMatch(expression, ValidPattern))
             {
-                ValidateFail();
+                ValidateFail("expression is invalid!");
             }
         }
 
@@ -73,7 +73,7 @@ namespace CalculatorLibrary
                         openBrackets--;
                         if (openBrackets < 0)
                         {
-                            ValidateFail();
+                            ValidateFail("Cannot have close brackets before open!");
                         }
                     }
                 }
@@ -81,7 +81,7 @@ namespace CalculatorLibrary
 
             if (openBrackets != 0)
             {
-                ValidateFail();
+                ValidateFail("must have the same number of close as open brackets");
             }
         }
 
@@ -95,9 +95,9 @@ namespace CalculatorLibrary
             return expression.StartsWith("(") && expression.EndsWith(")");
         }
 
-        private void ValidateFail()
+        private void ValidateFail(string msg)
         {
-            throw new ArgumentException("Invalid expression!");
+            throw new ArgumentException(msg);
         }
     }
 }

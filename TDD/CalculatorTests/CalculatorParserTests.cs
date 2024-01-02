@@ -17,7 +17,7 @@ namespace CalculatorTests
         }
 
         [TestMethod]
-        public void given_string_when_parse_then_returnLists()
+        public void given_valisSimpleString_when_parse_then_returnLists()
         {
             expression = "1+2";
             expectedExpression = new List<string>{ "1", "2" };
